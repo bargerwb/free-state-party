@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events — Free State Party</title>
+    <meta name="description" content="Open and members-only events from the Free State Party in New Hampshire.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Events — Free State Party">
+    <meta property="og:description" content="A private club for liberty-minded free staters in New Hampshire.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://freestate.party">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#fefce8',
+                            100: '#fef9c3',
+                            200: '#fef08a',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#d4a017',
+                            600: '#b8860b',
+                            700: '#92700c',
+                            800: '#6b5210',
+                            900: '#422d08',
+                        },
+                        dark: {
+                            50: '#f8f8f8',
+                            100: '#e0e0e0',
+                            200: '#b0b0b0',
+                            300: '#808080',
+                            400: '#505050',
+                            500: '#2a2a2a',
+                            600: '#1f1f1f',
+                            700: '#181818',
+                            800: '#141414',
+                            900: '#0a0a0a',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4a017 0%, #facc15 50%, #d4a017 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .divider {
+            width: 80px;
+            height: 3px;
+            background: #d4a017;
+        }
+
+        /* Cycling word animation (home page only) */
+        .cycle-word {
+            display: inline-block;
+            min-width: 200px;
+            transition: opacity 300ms ease;
+        }
+        .cycle-word.fade-out {
+            opacity: 0;
+        }
+
+        /* Nav transition */
+        .nav-scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 160, 23, 0.15);
+        }
+
+        /* Video styling */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        /* Form focus styles */
+        .form-input:focus {
+            outline: none;
+            border-color: #d4a017;
+            box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.25);
+        }
+
+        /* Active nav link */
+        .nav-active {
+            color: #d4a017;
+        }
+    </style>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Free State Party",
+        "description": "A private club for liberty-minded free staters in New Hampshire.",
+        "url": "https://freestate.party",
+        "areaServed": {
+            "@type": "State",
+            "name": "New Hampshire"
+        }
+    }
+    </script>
+</head>
+<body class="bg-dark-900 text-dark-100 antialiased">
+
+    <!-- ========== NAVIGATION ========== -->
+    <header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <!-- Wordmark -->
+            <a href="index.html" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
+                Free State <span class="text-gold-500">Party</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="about.html" class="text-dark-200 hover:text-gold-500 transition-colors">About</a>
+                <a href="events.html" class="nav-active hover:text-gold-500 transition-colors">Events</a>
+                <a href="join.html" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Join Us</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-toggle" class="md:hidden p-2 text-dark-200 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Toggle menu">
+                <svg id="menu-icon-open" class="w-6 h-6" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <svg id="menu-icon-close" class="w-6 h-6 hidden" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-lg border-t border-dark-700 px-4 pb-6">
+            <div class="flex flex-col gap-1 pt-4 text-base font-medium">
+                <a href="about.html" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">About</a>
+                <a href="events.html" class="mobile-link py-3 px-4 nav-active hover:text-gold-500 rounded-lg transition-colors">Events</a>
+                <a href="join.html" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Join Us</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== PAGE CONTENT ========== -->
+    
+    <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28">
+        <div class="max-w-3xl mx-auto">
+            <div class="divider mb-6"></div>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-8">Events</h2>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-10">
+                <button id="tab-open" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900" data-tab="open">
+                    Open
+                </button>
+                <button id="tab-closed" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100" data-tab="closed">
+                    Members Only
+                </button>
+            </div>
+
+            <!-- Open Events -->
+            <div id="events-open" class="events-panel grid gap-6">
+                <div class="bg-dark-900 border border-dark-600 rounded-lg p-6 hover:border-gold-700/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                        <h3 class="font-display text-xl font-bold text-dark-50">Free State Saturdays</h3>
+                        <span class="text-gold-500 font-medium text-sm whitespace-nowrap">First Saturday of every month</span>
+                    </div>
+                    <p class="text-dark-400 text-sm mb-2">6:00 PM &bull; 8025 S Willow St #205, Manchester, NH</p>
+                    <p class="text-dark-300 leading-relaxed">The biggest monthly liberty gathering in New Hampshire. Food, families, and real conversation. No RSVP, no ticket, no cover. Just show up.</p>
+                    <a href="https://free-state-saturdays.netlify.app" target="_blank" rel="noopener" class="inline-block mt-3 text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Learn more &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Closed Events -->
+            <div id="events-closed" class="events-panel hidden">
+                <p class="text-2xl text-dark-200 font-display italic">Private.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="px-6 py-12 border-t border-dark-800">
+        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="index.html" class="font-display text-lg text-dark-50">
+                Free State <span class="text-gold-500">Party</span>
+            </a>
+            <div class="flex items-center gap-6 text-sm text-dark-400">
+                <a href="about.html" class="hover:text-dark-200 transition-colors">About</a>
+                <a href="events.html" class="hover:text-dark-200 transition-colors">Events</a>
+                <a href="join.html" class="hover:text-gold-500 transition-colors">Join Us</a>
+            </div>
+            <p class="text-dark-500 text-sm">New Hampshire</p>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        // --- Mobile Nav Toggle ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('menu-icon-open');
+        const iconClose = document.getElementById('menu-icon-close');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            iconOpen.classList.toggle('hidden');
+            iconClose.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+            });
+        });
+
+        // --- Nav Background on Scroll ---
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        }, { passive: true });
+    </script>
+
+    <!-- Page-specific scripts -->
+    <script>
+        document.querySelectorAll('.events-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+
+                // Toggle panels
+                document.querySelectorAll('.events-panel').forEach(p => p.classList.add('hidden'));
+                document.getElementById('events-' + target).classList.remove('hidden');
+
+                // Toggle tab styles
+                document.querySelectorAll('.events-tab').forEach(t => {
+                    t.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100';
+                });
+                tab.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Video files (too large for git — copy from source or download)
+site/video/
+
+# OS
+.DS_Store
