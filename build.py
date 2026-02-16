@@ -130,11 +130,11 @@ def parse_events(text):
 
             link_html = ''
             if event.get('link'):
-                link_html = f'<a href="{event["link"]}" target="_blank" rel="noopener" class="inline-block mt-3 text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Learn more &rarr;</a>'
+                link_html = f'<a href="{event["link"]}" class="inline-block mt-3 text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Learn more &rarr;</a>'
 
             card = f'''<div class="bg-dark-900 border border-dark-600 rounded-lg p-6 hover:border-gold-700/50 transition-colors">
                     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
-                        <h3 class="font-display text-xl font-bold text-dark-50">{event.get("title", "")}</h3>
+                        <h3 class="font-display text-xl font-bold text-dark-50">{'<a href="' + event["link"] + '" class="hover:text-gold-500 transition-colors">' + event.get("title", "") + '</a>' if event.get("link") else event.get("title", "")}</h3>
                         <span class="text-gold-500 font-medium text-sm whitespace-nowrap">{event.get("date", "")}</span>
                     </div>
                     {details_html}
