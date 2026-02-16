@@ -78,6 +78,7 @@
         .cycle-word {
             display: inline-block;
             min-width: 200px;
+            padding-bottom: 0.15em;
             transition: opacity 300ms ease;
         }
         .cycle-word.fade-out {
@@ -144,15 +145,15 @@
     <header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <!-- Wordmark -->
-            <a href="index.html" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
+            <a href="./" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
                 Free State <span class="text-gold-500">Party</span>
             </a>
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="about.html" class="text-dark-200 hover:text-gold-500 transition-colors">About</a>
-                <a href="events.html" class="text-dark-200 hover:text-gold-500 transition-colors">Events</a>
-                <a href="join.html" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Join Us</a>
+                <a href="./about/" class="text-dark-200 hover:text-gold-500 transition-colors">About</a>
+                <a href="./events/" class="text-dark-200 hover:text-gold-500 transition-colors">Events</a>
+                <a href="./saturdays/" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Join Us</a>
             </div>
 
             <!-- Mobile Menu Button -->
@@ -169,9 +170,9 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-lg border-t border-dark-700 px-4 pb-6">
             <div class="flex flex-col gap-1 pt-4 text-base font-medium">
-                <a href="about.html" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">About</a>
-                <a href="events.html" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">Events</a>
-                <a href="join.html" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Join Us</a>
+                <a href="./about/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">About</a>
+                <a href="./events/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">Events</a>
+                <a href="./saturdays/" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Join Us</a>
             </div>
         </div>
     </header>
@@ -179,28 +180,27 @@
     <!-- ========== PAGE CONTENT ========== -->
     
     <section class="min-h-screen flex flex-col justify-center px-6 pt-20 pb-12 md:py-0">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-                <span class="text-dark-50">A private club for</span><br>
-                <span class="gold-gradient cycle-word" id="cycling-word" aria-live="polite">patriots</span><br>
-                <span class="text-dark-50">free staters.</span>
-            </h1>
-            <p class="text-xl sm:text-2xl text-dark-200 leading-relaxed max-w-2xl mb-10 font-display italic">
-                We saw you from across the room.
-            </p>
-            <a href="join.html" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-                Join Us
-            </a>
-        </div>
-    </section>
-
-    <section class="px-6 pb-20 md:pb-28">
-        <div class="max-w-4xl mx-auto">
-            <div class="video-container shadow-2xl">
-                <video controls preload="metadata" playsinline>
-                    <source src="video/homepage.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+        <div class="max-w-6xl mx-auto w-full lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+            <div>
+                <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6">
+                    <span class="text-dark-50">A private club for</span><br>
+                    <span class="gold-gradient cycle-word" id="cycling-word" aria-live="polite">patriot</span><br>
+                    <span class="text-dark-50">free staters.</span>
+                </h1>
+                <p class="text-xl sm:text-2xl lg:text-xl xl:text-2xl text-dark-200 leading-relaxed max-w-2xl mb-10 font-display italic">
+                    We saw you from across the room.
+                </p>
+                <a href="./saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+                    Join Us
+                </a>
+            </div>
+            <div class="mt-12 lg:mt-0">
+                <div class="video-container shadow-2xl">
+                    <video controls preload="metadata" playsinline>
+                        <source src="./video/homepage.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
             </div>
         </div>
     </section>
@@ -208,13 +208,13 @@
     <!-- ========== FOOTER ========== -->
     <footer class="px-6 py-12 border-t border-dark-800">
         <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <a href="index.html" class="font-display text-lg text-dark-50">
+            <a href="./" class="font-display text-lg text-dark-50">
                 Free State <span class="text-gold-500">Party</span>
             </a>
             <div class="flex items-center gap-6 text-sm text-dark-400">
-                <a href="about.html" class="hover:text-dark-200 transition-colors">About</a>
-                <a href="events.html" class="hover:text-dark-200 transition-colors">Events</a>
-                <a href="join.html" class="hover:text-gold-500 transition-colors">Join Us</a>
+                <a href="./about/" class="hover:text-dark-200 transition-colors">About</a>
+                <a href="./events/" class="hover:text-dark-200 transition-colors">Events</a>
+                <a href="./saturdays/" class="hover:text-gold-500 transition-colors">Join Us</a>
             </div>
             <p class="text-dark-500 text-sm">New Hampshire</p>
         </div>
@@ -256,7 +256,7 @@
 
     <!-- Page-specific scripts -->
     <script>
-        const words = ["patriots", "nationalists", "pro-family", "right wing", "capitalist"];
+        const words = ["patriot", "builder", "nationalist", "pro-natal", "right-wing", "makers", "anti-communist", "free-market"];
         const el = document.getElementById('cycling-word');
         let currentIndex = 0;
         let paused = false;

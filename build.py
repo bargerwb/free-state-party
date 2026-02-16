@@ -152,7 +152,7 @@ def parse_words(text):
 
 
 def build_page(base, page_title, page_description, og_title, page_content,
-               page_scripts='', active_nav=None):
+               page_scripts='', active_nav=None, is_subdir=False):
     """Inject content into base template and return final HTML."""
     html = base
     html = html.replace('{{page_title}}', page_title)
@@ -160,6 +160,9 @@ def build_page(base, page_title, page_description, og_title, page_content,
     html = html.replace('{{og_title}}', og_title)
     html = html.replace('{{page_content}}', page_content)
     html = html.replace('{{page_scripts}}', page_scripts)
+
+    # Relative base path: "." for root index.html, ".." for subdir pages
+    html = html.replace('{{base}}', '..' if is_subdir else '.')
 
     # Nav active states
     for nav in ['about', 'events']:
@@ -192,28 +195,27 @@ def build():
     # --- Page 1: Home (hero + video) ---
     home_content = f'''
     <section class="min-h-screen flex flex-col justify-center px-6 pt-20 pb-12 md:py-0">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-                <span class="text-dark-50">A private club for</span><br>
-                <span class="gold-gradient cycle-word" id="cycling-word" aria-live="polite">{words[0]}</span><br>
-                <span class="text-dark-50">free staters.</span>
-            </h1>
-            <p class="text-xl sm:text-2xl text-dark-200 leading-relaxed max-w-2xl mb-10 font-display italic">
-                We saw you from across the room.
-            </p>
-            <a href="join.html" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-                Join Us
-            </a>
-        </div>
-    </section>
-
-    <section class="px-6 pb-20 md:pb-28">
-        <div class="max-w-4xl mx-auto">
-            <div class="video-container shadow-2xl">
-                <video controls preload="metadata" playsinline>
-                    <source src="video/homepage.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+        <div class="max-w-6xl mx-auto w-full lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+            <div>
+                <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6">
+                    <span class="text-dark-50">A private club for</span><br>
+                    <span class="gold-gradient cycle-word" id="cycling-word" aria-live="polite">{words[0]}</span><br>
+                    <span class="text-dark-50">free staters.</span>
+                </h1>
+                <p class="text-xl sm:text-2xl lg:text-xl xl:text-2xl text-dark-200 leading-relaxed max-w-2xl mb-10 font-display italic">
+                    We saw you from across the room.
+                </p>
+                <a href="{{{{base}}}}/saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+                    Join Us
+                </a>
+            </div>
+            <div class="mt-12 lg:mt-0">
+                <div class="video-container shadow-2xl">
+                    <video controls preload="metadata" playsinline>
+                        <source src="{{{{base}}}}/video/homepage.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
             </div>
         </div>
     </section>'''
@@ -274,7 +276,7 @@ def build():
     </section>
 
     <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="join.html" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+        <a href="{{{{base}}}}/saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
             Come Meet Us
         </a>
     </section>'''
@@ -285,7 +287,8 @@ def build():
         page_description='Not a nonprofit. Not a political party. A private club for liberty-minded free staters in New Hampshire.',
         og_title='About — Free State Party',
         page_content=about_content,
-        active_nav='about'
+        active_nav='about',
+        is_subdir=True
     )
 
     # --- Page 3: Events (tabbed: open / closed) ---
@@ -342,7 +345,8 @@ def build():
         og_title='Events — Free State Party',
         page_content=events_content,
         page_scripts=events_scripts,
-        active_nav='events'
+        active_nav='events',
+        is_subdir=True
     )
 
     # --- Page 4: Join / Come Meet Us ---
@@ -404,22 +408,64 @@ def build():
         page_description='Introduce yourself to the Free State Party. We\'ll set up a time to meet in person.',
         og_title='Join Us — Free State Party',
         page_content=join_content,
-        active_nav=None
+        active_nav=None,
+        is_subdir=True
+    )
+
+    # --- Page 5: Saturdays (unlisted landing page) ---
+    saturdays_text = read_file(os.path.join(CONTENT_DIR, 'saturdays.md'))
+    saturdays_title, saturdays_body = md_to_html(saturdays_text)
+
+    saturdays_content = f'''
+    <section class="px-6 pt-32 pb-12 md:pt-40 md:pb-16">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="divider mb-6 mx-auto"></div>
+            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-dark-50 mb-6">{saturdays_title if saturdays_title else "Free State Saturdays"}</h1>
+            <div class="space-y-4 text-lg text-dark-200 leading-relaxed max-w-2xl mx-auto">
+                {saturdays_body}
+            </div>
+        </div>
+    </section>
+
+    <section class="px-6 pb-20 md:pb-28">
+        <div class="max-w-4xl mx-auto">
+            <img src="{{{{base}}}}/img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
+                 class="w-full rounded-lg shadow-2xl">
+        </div>
+    </section>
+
+    <section class="px-6 pb-20 md:pb-28 text-center">
+        <a href="{{{{base}}}}/saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+            Come Meet Us
+        </a>
+    </section>'''
+
+    saturdays_html = build_page(
+        base,
+        page_title='Free State Saturdays — Free State Party',
+        page_description='A monthly open gathering for liberty-minded people in New Hampshire. No membership required.',
+        og_title='Free State Saturdays',
+        page_content=saturdays_content,
+        active_nav=None,
+        is_subdir=True
     )
 
     # --- Write all pages ---
+    # Root page stays as index.html; all others become <name>/index.html for clean URLs
     pages = {
         'index.html': home_html,
-        'about.html': about_html,
-        'events.html': events_html_page,
-        'join.html': join_html,
+        'about/index.html': about_html,
+        'events/index.html': events_html_page,
+        # 'join/index.html': join_html,  # disabled — links redirect to /saturdays
+        'saturdays/index.html': saturdays_html,
     }
 
-    for filename, html in pages.items():
-        path = os.path.join(SITE_DIR, filename)
-        with open(path, 'w', encoding='utf-8') as f:
+    for filepath, html in pages.items():
+        full_path = os.path.join(SITE_DIR, filepath)
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        with open(full_path, 'w', encoding='utf-8') as f:
             f.write(html)
-        print(f"  Built: site/{filename}")
+        print(f"  Built: site/{filepath}")
 
     # --- Copy video if not already present ---
     video_src = os.path.expanduser('~/Desktop/free-state-party-homepage-video.mp4')

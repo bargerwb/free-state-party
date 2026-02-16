@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Us — Free State Party</title>
-    <meta name="description" content="Introduce yourself to the Free State Party. We'll set up a time to meet in person.">
+    <title>About — Free State Party</title>
+    <meta name="description" content="Not a nonprofit. Not a political party. A private club for liberty-minded free staters in New Hampshire.">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Join Us — Free State Party">
+    <meta property="og:title" content="About — Free State Party">
     <meta property="og:description" content="A private club for liberty-minded free staters in New Hampshire.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://freestate.party">
@@ -78,6 +78,7 @@
         .cycle-word {
             display: inline-block;
             min-width: 200px;
+            padding-bottom: 0.15em;
             transition: opacity 300ms ease;
         }
         .cycle-word.fade-out {
@@ -144,15 +145,15 @@
     <header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <!-- Wordmark -->
-            <a href="index.html" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
+            <a href="../" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
                 Free State <span class="text-gold-500">Party</span>
             </a>
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="about.html" class="text-dark-200 hover:text-gold-500 transition-colors">About</a>
-                <a href="events.html" class="text-dark-200 hover:text-gold-500 transition-colors">Events</a>
-                <a href="join.html" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Join Us</a>
+                <a href="../about/" class="nav-active hover:text-gold-500 transition-colors">About</a>
+                <a href="../events/" class="text-dark-200 hover:text-gold-500 transition-colors">Events</a>
+                <a href="../saturdays/" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Join Us</a>
             </div>
 
             <!-- Mobile Menu Button -->
@@ -169,78 +170,57 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-lg border-t border-dark-700 px-4 pb-6">
             <div class="flex flex-col gap-1 pt-4 text-base font-medium">
-                <a href="about.html" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">About</a>
-                <a href="events.html" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">Events</a>
-                <a href="join.html" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Join Us</a>
+                <a href="../about/" class="mobile-link py-3 px-4 nav-active hover:text-gold-500 rounded-lg transition-colors">About</a>
+                <a href="../events/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">Events</a>
+                <a href="../saturdays/" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Join Us</a>
             </div>
         </div>
     </header>
 
     <!-- ========== PAGE CONTENT ========== -->
     
-    <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28">
-        <div class="max-w-2xl mx-auto">
+    <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28 bg-dark-800">
+        <div class="max-w-3xl mx-auto">
             <div class="divider mb-6"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-4">We'd like to get to know you.</h2>
-            <div class="space-y-4 text-lg text-dark-200 leading-relaxed mb-10">
-                <p>This isn't an application. There's no form to fill out, no committee to review your resume. We just want to know who you are.</p>
-                <p>Tell us a bit about yourself &mdash; what brought you to New Hampshire, what you're building, what you believe. We'll reach out and set up a time to meet in person.</p>
-                <p><strong class="text-dark-50">We're selective, but not serious about it.</strong> We just want to know you're one of us.</p>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-10">You didn't move here to attend committee meetings.</h2>
+            <div class="space-y-6 text-lg text-dark-200 leading-relaxed">
+                <p>You uprooted your life because you believe something. You left behind a career, a neighborhood, maybe a whole social circle &mdash; because New Hampshire was supposed to be different.</p>
+                <p>And it is. But the organizations are stale. The meetings are lifeless. The same twelve people run everything, and the energy that pulled you here is buried under bylaws and Robert's Rules of Order.</p>
+                <p><strong class="text-dark-50">You came here to build something. So did we.</strong></p>
+                <p>The Free State Party is what happens when people who actually believe in something find each other. Not an org. Not a movement. A room full of people who get it &mdash; and who are doing something about it.</p>
             </div>
-
-            <form name="concierge" method="POST" data-netlify="true" class="space-y-5">
-                <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
-
-                <div>
-                    <label for="name" class="block text-sm font-medium text-dark-200 mb-2">Name</label>
-                    <input type="text" id="name" name="name" required
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg min-h-[48px]"
-                        placeholder="Your name">
-                </div>
-
-                <div>
-                    <label for="contact" class="block text-sm font-medium text-dark-200 mb-2">Email or phone</label>
-                    <input type="text" id="contact" name="contact" required
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg min-h-[48px]"
-                        placeholder="How we can reach you">
-                </div>
-
-                <div>
-                    <label for="about" class="block text-sm font-medium text-dark-200 mb-2">Tell us about yourself</label>
-                    <textarea id="about" name="about" rows="4" required
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg resize-none"
-                        placeholder="What brought you to NH? What are you building? What do you believe?"></textarea>
-                </div>
-
-                <div>
-                    <label for="x-handle" class="block text-sm font-medium text-dark-200 mb-2">X handle <span class="text-dark-400">(optional)</span></label>
-                    <input type="text" id="x-handle" name="x-handle"
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg min-h-[48px]"
-                        placeholder="@yourhandle">
-                </div>
-
-                <button type="submit"
-                    class="w-full bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg py-4 rounded-lg transition-colors min-h-[48px]">
-                    Introduce Yourself
-                </button>
-
-                <p class="text-dark-400 text-sm text-center">
-                    We'll reach out to set up a time to meet. No spam, no mailing list, no algorithms.
-                </p>
-            </form>
         </div>
+    </section>
+
+    <section class="px-6 py-20 md:py-28">
+        <div class="max-w-3xl mx-auto">
+            <div class="divider mb-6"></div>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-10">This is not an organization.</h2>
+            <div class="space-y-6 text-lg text-dark-200 leading-relaxed">
+                <p>Not a nonprofit. Not a political party &mdash; despite the name. Not a Telegram group. Not a Zoom call.</p>
+                <p><strong class="text-dark-50">The Free State Party is a private club.</strong> In person. By invitation. We meet, we talk, we eat, we build. The people in this room are building businesses, raising families, winning elections, and reshaping the culture of an entire state.</p>
+                <p>We don't recruit. We invite. And we don't apologize for being selective.</p>
+                <p>If you've been looking for the people who are actually doing things &mdash; not just talking about doing things &mdash; you've been looking for us.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-6 pb-20 md:pb-28 text-center">
+        <a href="../saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+            Come Meet Us
+        </a>
     </section>
 
     <!-- ========== FOOTER ========== -->
     <footer class="px-6 py-12 border-t border-dark-800">
         <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <a href="index.html" class="font-display text-lg text-dark-50">
+            <a href="../" class="font-display text-lg text-dark-50">
                 Free State <span class="text-gold-500">Party</span>
             </a>
             <div class="flex items-center gap-6 text-sm text-dark-400">
-                <a href="about.html" class="hover:text-dark-200 transition-colors">About</a>
-                <a href="events.html" class="hover:text-dark-200 transition-colors">Events</a>
-                <a href="join.html" class="hover:text-gold-500 transition-colors">Join Us</a>
+                <a href="../about/" class="hover:text-dark-200 transition-colors">About</a>
+                <a href="../events/" class="hover:text-dark-200 transition-colors">Events</a>
+                <a href="../saturdays/" class="hover:text-gold-500 transition-colors">Join Us</a>
             </div>
             <p class="text-dark-500 text-sm">New Hampshire</p>
         </div>

@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — Free State Party</title>
-    <meta name="description" content="Not a nonprofit. Not a political party. A private club for liberty-minded free staters in New Hampshire.">
+    <title>Events — Free State Party</title>
+    <meta name="description" content="Open and members-only events from the Free State Party in New Hampshire.">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="About — Free State Party">
+    <meta property="og:title" content="Events — Free State Party">
     <meta property="og:description" content="A private club for liberty-minded free staters in New Hampshire.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://freestate.party">
@@ -78,6 +78,7 @@
         .cycle-word {
             display: inline-block;
             min-width: 200px;
+            padding-bottom: 0.15em;
             transition: opacity 300ms ease;
         }
         .cycle-word.fade-out {
@@ -144,15 +145,15 @@
     <header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <!-- Wordmark -->
-            <a href="index.html" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
+            <a href="../" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
                 Free State <span class="text-gold-500">Party</span>
             </a>
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="about.html" class="nav-active hover:text-gold-500 transition-colors">About</a>
-                <a href="events.html" class="text-dark-200 hover:text-gold-500 transition-colors">Events</a>
-                <a href="join.html" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Join Us</a>
+                <a href="../about/" class="text-dark-200 hover:text-gold-500 transition-colors">About</a>
+                <a href="../events/" class="nav-active hover:text-gold-500 transition-colors">Events</a>
+                <a href="../saturdays/" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Join Us</a>
             </div>
 
             <!-- Mobile Menu Button -->
@@ -169,57 +170,60 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-lg border-t border-dark-700 px-4 pb-6">
             <div class="flex flex-col gap-1 pt-4 text-base font-medium">
-                <a href="about.html" class="mobile-link py-3 px-4 nav-active hover:text-gold-500 rounded-lg transition-colors">About</a>
-                <a href="events.html" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">Events</a>
-                <a href="join.html" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Join Us</a>
+                <a href="../about/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">About</a>
+                <a href="../events/" class="mobile-link py-3 px-4 nav-active hover:text-gold-500 rounded-lg transition-colors">Events</a>
+                <a href="../saturdays/" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Join Us</a>
             </div>
         </div>
     </header>
 
     <!-- ========== PAGE CONTENT ========== -->
     
-    <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28 bg-dark-800">
+    <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28">
         <div class="max-w-3xl mx-auto">
             <div class="divider mb-6"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-10">You didn't move here to attend committee meetings.</h2>
-            <div class="space-y-6 text-lg text-dark-200 leading-relaxed">
-                <p>You uprooted your life because you believe something. You left behind a career, a neighborhood, maybe a whole social circle &mdash; because New Hampshire was supposed to be different.</p>
-                <p>And it is. But the organizations are stale. The meetings are lifeless. The same twelve people run everything, and the energy that pulled you here is buried under bylaws and Robert's Rules of Order.</p>
-                <p><strong class="text-dark-50">You came here to build something. So did we.</strong></p>
-                <p>The Free State Party is what happens when people who actually believe in something find each other. Not an org. Not a movement. A room full of people who get it &mdash; and who are doing something about it.</p>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-8">Events</h2>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-10">
+                <button id="tab-open" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900" data-tab="open">
+                    Open
+                </button>
+                <button id="tab-closed" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100" data-tab="closed">
+                    Members Only
+                </button>
+            </div>
+
+            <!-- Open Events -->
+            <div id="events-open" class="events-panel grid gap-6">
+                <div class="bg-dark-900 border border-dark-600 rounded-lg p-6 hover:border-gold-700/50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                        <h3 class="font-display text-xl font-bold text-dark-50">Free State Saturdays</h3>
+                        <span class="text-gold-500 font-medium text-sm whitespace-nowrap">First Saturday of every month</span>
+                    </div>
+                    <p class="text-dark-400 text-sm mb-2">6:00 PM &bull; 8025 S Willow St #205, Manchester, NH</p>
+                    <p class="text-dark-300 leading-relaxed">The biggest monthly liberty gathering in New Hampshire. Food, families, and real conversation. No RSVP, no ticket, no cover. Just show up.</p>
+                    <a href="https://free-state-saturdays.netlify.app" target="_blank" rel="noopener" class="inline-block mt-3 text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Learn more &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Closed Events -->
+            <div id="events-closed" class="events-panel hidden">
+                <p class="text-2xl text-dark-200 font-display italic">Private.</p>
             </div>
         </div>
-    </section>
-
-    <section class="px-6 py-20 md:py-28">
-        <div class="max-w-3xl mx-auto">
-            <div class="divider mb-6"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-10">This is not an organization.</h2>
-            <div class="space-y-6 text-lg text-dark-200 leading-relaxed">
-                <p>Not a nonprofit. Not a political party &mdash; despite the name. Not a Telegram group. Not a Zoom call.</p>
-                <p><strong class="text-dark-50">The Free State Party is a private club.</strong> In person. By invitation. We meet, we talk, we eat, we build. The people in this room are building businesses, raising families, winning elections, and reshaping the culture of an entire state.</p>
-                <p>We don't recruit. We invite. And we don't apologize for being selective.</p>
-                <p>If you've been looking for the people who are actually doing things &mdash; not just talking about doing things &mdash; you've been looking for us.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="join.html" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-            Come Meet Us
-        </a>
     </section>
 
     <!-- ========== FOOTER ========== -->
     <footer class="px-6 py-12 border-t border-dark-800">
         <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <a href="index.html" class="font-display text-lg text-dark-50">
+            <a href="../" class="font-display text-lg text-dark-50">
                 Free State <span class="text-gold-500">Party</span>
             </a>
             <div class="flex items-center gap-6 text-sm text-dark-400">
-                <a href="about.html" class="hover:text-dark-200 transition-colors">About</a>
-                <a href="events.html" class="hover:text-dark-200 transition-colors">Events</a>
-                <a href="join.html" class="hover:text-gold-500 transition-colors">Join Us</a>
+                <a href="../about/" class="hover:text-dark-200 transition-colors">About</a>
+                <a href="../events/" class="hover:text-dark-200 transition-colors">Events</a>
+                <a href="../saturdays/" class="hover:text-gold-500 transition-colors">Join Us</a>
             </div>
             <p class="text-dark-500 text-sm">New Hampshire</p>
         </div>
@@ -260,6 +264,22 @@
     </script>
 
     <!-- Page-specific scripts -->
-    
+    <script>
+        document.querySelectorAll('.events-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+
+                // Toggle panels
+                document.querySelectorAll('.events-panel').forEach(p => p.classList.add('hidden'));
+                document.getElementById('events-' + target).classList.remove('hidden');
+
+                // Toggle tab styles
+                document.querySelectorAll('.events-tab').forEach(t => {
+                    t.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100';
+                });
+                tab.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900';
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,5 +1,8 @@
-patriots
-nationalists
-pro-family
-right wing
-capitalist
+patriot
+builder
+nationalist
+pro-natal
+right-wing
+makers
+anti-communist
+free-market
