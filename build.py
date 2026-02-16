@@ -178,6 +178,13 @@ def build():
     base = read_file(os.path.join(TEMPLATE_DIR, 'base.html'))
 
     # --- Read content ---
+    hero_text = read_file(os.path.join(CONTENT_DIR, 'hero.md'))
+    hero = {}
+    for line in hero_text.split('\n'):
+        if ':' in line and not line.startswith('#'):
+            key, val = line.split(':', 1)
+            hero[key.strip()] = val.strip()
+
     words = parse_words(read_file(os.path.join(CONTENT_DIR, 'words.md')))
 
     pitch_text = read_file(os.path.join(CONTENT_DIR, 'pitch.md'))
@@ -203,7 +210,7 @@ def build():
                     <span class="text-dark-50">free staters.</span>
                 </h1>
                 <p class="text-xl sm:text-2xl lg:text-xl xl:text-2xl text-dark-200 leading-relaxed max-w-2xl mb-10 font-display italic">
-                    We saw you from across the room.
+                    {hero.get('sub_tagline', 'We have a plan.')}
                 </p>
                 <a href="{{{{base}}}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
                     Join Us
