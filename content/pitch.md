@@ -2,6 +2,8 @@
 
 ## You didn't move here to attend committee meetings.
 
+Test deploy.
+
 You uprooted your life because you believe something. You left behind a career, a neighborhood, maybe a whole social circle — because New Hampshire was supposed to be different.
 
 And it is. But the organizations are stale. The meetings are lifeless. The same twelve people run everything, and the energy that pulled you here is buried under bylaws and Robert's Rules of Order.
