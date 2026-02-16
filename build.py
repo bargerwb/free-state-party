@@ -205,7 +205,7 @@ def build():
                 <p class="text-xl sm:text-2xl lg:text-xl xl:text-2xl text-dark-200 leading-relaxed max-w-2xl mb-10 font-display italic">
                     We saw you from across the room.
                 </p>
-                <a href="{{{{base}}}}/saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+                <a href="{{{{base}}}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
                     Join Us
                 </a>
             </div>
@@ -276,7 +276,7 @@ def build():
     </section>
 
     <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="{{{{base}}}}/saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+        <a href="{{{{base}}}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
             Come Meet Us
         </a>
     </section>'''
@@ -435,7 +435,7 @@ def build():
     </section>
 
     <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="{{{{base}}}}/saturdays/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+        <a href="{{{{base}}}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
             Come Meet Us
         </a>
     </section>'''
@@ -457,7 +457,7 @@ def build():
         'about/index.html': about_html,
         'events/index.html': events_html_page,
         # 'join/index.html': join_html,  # disabled — links redirect to /saturdays
-        'saturdays/index.html': saturdays_html,
+        'saturday/index.html': saturdays_html,
     }
 
     for filepath, html in pages.items():
