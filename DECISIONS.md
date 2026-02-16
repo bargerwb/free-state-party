@@ -11,9 +11,8 @@ Last updated: February 15, 2026
 - **What**: Landing page for the Free State Party — a private club for liberty-minded free staters in NH
 - **Who runs it**: Jeremy Kauffman's crew. Dennis Pratt handles concierge/vetting (anonymous on site).
 - **Domain**: freestate.party (Jeremy owns it)
-- **Site**: https://free-state-party.netlify.app
-- **Netlify site ID**: d3e99d3d-f171-43b7-8f20-8099bfa744bf
-- **Deploy from**: `site/` folder via Netlify REST API (file digest method)
+- **Site**: https://freestate.party
+- **Deploy from**: `git push production main` (post-receive hook on DO droplet)
 - **Stack**: Markdown content → Python build script → multi-page static site + Tailwind CDN
 - **Pages**: index.html (home), about.html, events.html, join.html
 
@@ -75,4 +74,4 @@ Files: hero.md, pitch.md, what-this-is.md, events.md, come-meet-us.md, footer.md
 2. Logo — styled text for V1
 3. Upcoming events — placeholder events
 4. ~~Netlify site ID~~ -- created: d3e99d3d-f171-43b7-8f20-8099bfa744bf
-5. DNS — Jeremy needs to point freestate.party to Netlify (CNAME to free-state-party.netlify.app)
+5. ~~DNS~~ — freestate.party points to DO droplet (147.182.191.226)
