@@ -1,11 +1,15 @@
 # What This Is
 
-## This is not an organization.
+## We Take the Wheel.
 
-Not a nonprofit. Not a political party — despite the name. Not a Telegram group. Not a Zoom call.
+What we build will not look precisely like anything that came before. There is no going back. We will never RETVRN.
 
-**The Free State Party is a private club.** In person. By invitation. We meet, we talk, we eat, we build. The people in this room are building businesses, raising families, winning elections, and reshaping the culture of an entire state.
+We can learn from the past, but we must create something new.
 
-We don't recruit. We invite. And we don't apologize for being selective.
+Not a nonprofit. Not a political party — despite the name. Not a friendship club. 
 
-If you've been looking for the people who are actually doing things — not just talking about doing things — you've been looking for us.
+We are the rewrite. We correct the mistakes.
+
+We are men who build businesses, raise healthy families, win elections, and shape the culture.
+
+If you burn to secure the blessings of liberty for us and our posterity and have the brain to do it, join us.

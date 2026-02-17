@@ -6,7 +6,7 @@
   date: First Saturday of every month
   time: 6:00 PM
   location: varying
-  description: The biggest monthly liberty gathering in New Hampshire. Food, families, and interesting, fully-legal unrecorded conversation.
+  description: The biggest monthly liberty gathering in New Hampshire. Food, families, and interesting, definitely-legal unrecorded conversation.
   link: /saturday/
 
 ## Closed Events
