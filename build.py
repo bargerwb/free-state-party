@@ -413,7 +413,7 @@ def build():
     <section class="px-6 pb-12 md:pb-16">
         <div class="max-w-4xl mx-auto">
             <a href="{sat_maps_url}" target="_blank" rel="noopener" class="block select-none">
-                <img src="{{{{base}}}}/img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
+                <img src="{{{{base}}}}/img/saturdays-poster.png" alt="Free State Saturdays — this month's gathering"
                      class="w-full rounded-lg shadow-2xl hover:opacity-90 transition-opacity" style="max-height: min(80vh, 2000px); object-fit: contain;">
             </a>
         </div>
