@@ -110,6 +110,28 @@
             object-fit: cover;
             border-radius: 0.5rem;
         }
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(10, 10, 10, 0.3);
+            border-radius: 0.5rem;
+            transition: background 200ms ease;
+            border: none;
+            padding: 0;
+        }
+        .video-overlay:hover {
+            background: rgba(10, 10, 10, 0.15);
+        }
+        .video-overlay svg {
+            transition: transform 200ms ease;
+        }
+        .video-overlay:hover svg {
+            transform: scale(1.1);
+        }
 
         /* Form focus styles */
         .form-input:focus {
@@ -182,24 +204,27 @@
     <section class="px-6 pt-32 pb-12 md:pt-40 md:pb-16">
         <div class="max-w-4xl mx-auto text-center">
             <div class="divider mb-6 mx-auto"></div>
-            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-dark-50 mb-6">Free State Saturdays</h1>
+            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-dark-50 mb-6">Free State Saturday</h1>
             <div class="space-y-4 text-lg text-dark-200 leading-relaxed max-w-2xl mx-auto">
-                <p>Free State Saturdays is the largest monthly open gathering for liberty-minded people in New Hampshire. Whether you're well-seasoned or fresh, come through and see what we're about.</p>
+                <p>Free State Saturday is the largest monthly open gathering for liberty-minded people in New Hampshire. Whether you're well-seasoned or fresh, come through and see what we're about.</p>
                 <p>Outside of being invited by a member of the Party, attending one of these events is the only way to join.</p>
             </div>
         </div>
     </section>
 
-    <section class="px-6 pb-20 md:pb-28">
+    <section class="px-6 pb-12 md:pb-16">
         <div class="max-w-4xl mx-auto">
-            <img src="../img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
-                 class="w-full rounded-lg shadow-2xl">
+            <a href="https://www.google.com/maps/search/2+Institute+Dr,+Concord,+NH+03301" target="_blank" rel="noopener" class="block select-none">
+                <img src="../img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
+                     class="w-full rounded-lg shadow-2xl hover:opacity-90 transition-opacity">
+            </a>
         </div>
     </section>
 
     <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="../saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-            Come Meet Us
+        <a href="https://www.google.com/maps/search/2+Institute+Dr,+Concord,+NH+03301" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Map
         </a>
     </section>
 

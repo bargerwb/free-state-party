@@ -116,6 +116,12 @@ def parse_events(text):
     if current and section:
         events[section].append(current)
 
+    def make_link(href):
+        """Convert internal absolute links to use {{base}} for relative resolution."""
+        if href.startswith('/'):
+            return '{{base}}' + href
+        return href
+
     def render_cards(event_list, is_open=False):
         cards = []
         for event in event_list:
@@ -128,13 +134,18 @@ def parse_events(text):
             if details:
                 details_html = f'<p class="text-dark-400 text-sm mb-2">{" &bull; ".join(details)}</p>'
 
+            link = make_link(event['link']) if event.get('link') else ''
             link_html = ''
-            if event.get('link'):
-                link_html = f'<a href="{event["link"]}" class="inline-block mt-3 text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Learn more &rarr;</a>'
+            if link:
+                link_html = f'<a href="{link}" class="inline-block mt-3 text-gold-500 hover:text-gold-400 text-sm font-medium transition-colors">Learn more &rarr;</a>'
+
+            title_html = event.get('title', '')
+            if link:
+                title_html = f'<a href="{link}" class="hover:text-gold-500 transition-colors">{title_html}</a>'
 
             card = f'''<div class="bg-dark-900 border border-dark-600 rounded-lg p-6 hover:border-gold-700/50 transition-colors">
                     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
-                        <h3 class="font-display text-xl font-bold text-dark-50">{'<a href="' + event["link"] + '" class="hover:text-gold-500 transition-colors">' + event.get("title", "") + '</a>' if event.get("link") else event.get("title", "")}</h3>
+                        <h3 class="font-display text-xl font-bold text-dark-50">{title_html}</h3>
                         <span class="text-gold-500 font-medium text-sm whitespace-nowrap">{event.get("date", "")}</span>
                     </div>
                     {details_html}
@@ -196,8 +207,6 @@ def build():
     events_text = read_file(os.path.join(CONTENT_DIR, 'events.md'))
     open_events_html, closed_events_html = parse_events(events_text)
 
-    meet_text = read_file(os.path.join(CONTENT_DIR, 'come-meet-us.md'))
-    meet_title, meet_body = md_to_html(meet_text)
 
     # --- Page 1: Home (hero + video) ---
     home_content = f'''
@@ -217,11 +226,16 @@ def build():
                 </a>
             </div>
             <div class="mt-12 lg:mt-0">
-                <div class="video-container shadow-2xl">
-                    <video controls preload="metadata" playsinline>
+                <div class="video-container shadow-2xl" id="video-wrapper">
+                    <video id="hero-video" preload="metadata" playsinline>
                         <source src="{{{{base}}}}/video/homepage.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
                     </video>
+                    <button id="video-play" class="video-overlay" aria-label="Play video">
+                        <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+                            <circle cx="36" cy="36" r="35" stroke="#d4a017" stroke-width="2" fill="rgba(10,10,10,0.6)"/>
+                            <polygon points="28,20 28,52 54,36" fill="#d4a017"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -248,6 +262,21 @@ def build():
         document.addEventListener('visibilitychange', () => {{
             paused = document.hidden;
         }});
+
+        // Video player
+        const video = document.getElementById('hero-video');
+        const playBtn = document.getElementById('video-play');
+        if (video && playBtn) {{
+            playBtn.addEventListener('click', () => {{
+                playBtn.style.display = 'none';
+                video.controls = true;
+                video.play();
+            }});
+            video.addEventListener('ended', () => {{
+                playBtn.style.display = 'flex';
+                video.controls = false;
+            }});
+        }}
     </script>'''
 
     home_html = build_page(
@@ -356,72 +385,19 @@ def build():
         is_subdir=True
     )
 
-    # --- Page 4: Join / Come Meet Us ---
-    join_content = f'''
-    <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28">
-        <div class="max-w-2xl mx-auto">
-            <div class="divider mb-6"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-4">{meet_title if meet_title else "We'd like to get to know you."}</h2>
-            <div class="space-y-4 text-lg text-dark-200 leading-relaxed mb-10">
-                {meet_body}
-            </div>
-
-            <form name="concierge" method="POST" data-netlify="true" class="space-y-5">
-                <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
-
-                <div>
-                    <label for="name" class="block text-sm font-medium text-dark-200 mb-2">Name</label>
-                    <input type="text" id="name" name="name" required
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg min-h-[48px]"
-                        placeholder="Your name">
-                </div>
-
-                <div>
-                    <label for="contact" class="block text-sm font-medium text-dark-200 mb-2">Email or phone</label>
-                    <input type="text" id="contact" name="contact" required
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg min-h-[48px]"
-                        placeholder="How we can reach you">
-                </div>
-
-                <div>
-                    <label for="about" class="block text-sm font-medium text-dark-200 mb-2">Tell us about yourself</label>
-                    <textarea id="about" name="about" rows="4" required
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg resize-none"
-                        placeholder="What brought you to NH? What are you building? What do you believe?"></textarea>
-                </div>
-
-                <div>
-                    <label for="x-handle" class="block text-sm font-medium text-dark-200 mb-2">X handle <span class="text-dark-400">(optional)</span></label>
-                    <input type="text" id="x-handle" name="x-handle"
-                        class="form-input w-full bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 text-dark-50 placeholder-dark-400 text-lg min-h-[48px]"
-                        placeholder="@yourhandle">
-                </div>
-
-                <button type="submit"
-                    class="w-full bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg py-4 rounded-lg transition-colors min-h-[48px]">
-                    Introduce Yourself
-                </button>
-
-                <p class="text-dark-400 text-sm text-center">
-                    We'll reach out to set up a time to meet. No spam, no mailing list, no algorithms.
-                </p>
-            </form>
-        </div>
-    </section>'''
-
-    join_html = build_page(
-        base,
-        page_title='Join Us — Free State Party',
-        page_description='Introduce yourself to the Free State Party. We\'ll set up a time to meet in person.',
-        og_title='Join Us — Free State Party',
-        page_content=join_content,
-        active_nav=None,
-        is_subdir=True
-    )
 
     # --- Page 5: Saturdays (unlisted landing page) ---
     saturdays_text = read_file(os.path.join(CONTENT_DIR, 'saturdays.md'))
+    saturdays_meta = {}
+    for line in saturdays_text.split('\n'):
+        if ':' in line and not line.startswith('#'):
+            key, val = line.split(':', 1)
+            if key.strip().isidentifier():
+                saturdays_meta[key.strip()] = val.strip()
     saturdays_title, saturdays_body = md_to_html(saturdays_text)
+
+    sat_address = saturdays_meta.get('address', '')
+    sat_maps_url = 'https://www.google.com/maps/search/' + sat_address.replace(' ', '+') if sat_address else ''
 
     saturdays_content = f'''
     <section class="px-6 pt-32 pb-12 md:pt-40 md:pb-16">
@@ -434,16 +410,19 @@ def build():
         </div>
     </section>
 
-    <section class="px-6 pb-20 md:pb-28">
+    <section class="px-6 pb-12 md:pb-16">
         <div class="max-w-4xl mx-auto">
-            <img src="{{{{base}}}}/img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
-                 class="w-full rounded-lg shadow-2xl">
+            <a href="{sat_maps_url}" target="_blank" rel="noopener" class="block select-none">
+                <img src="{{{{base}}}}/img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
+                     class="w-full rounded-lg shadow-2xl hover:opacity-90 transition-opacity">
+            </a>
         </div>
     </section>
 
     <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="{{{{base}}}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-            Come Meet Us
+        <a href="{sat_maps_url}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Map
         </a>
     </section>'''
 
@@ -463,7 +442,6 @@ def build():
         'index.html': home_html,
         'about/index.html': about_html,
         'events/index.html': events_html_page,
-        # 'join/index.html': join_html,  # disabled — links redirect to /saturdays
         'saturday/index.html': saturdays_html,
     }
 
@@ -486,5 +464,44 @@ def build():
     print(f"Words: {words}")
 
 
-if __name__ == '__main__':
+def watch():
+    """Watch content/ and templates/ for changes, rebuild automatically."""
+    import time
+
+    watch_dirs = [CONTENT_DIR, TEMPLATE_DIR]
+
+    def get_mtimes():
+        mtimes = {}
+        for d in watch_dirs:
+            for root, _, files in os.walk(d):
+                for f in files:
+                    path = os.path.join(root, f)
+                    mtimes[path] = os.path.getmtime(path)
+        return mtimes
+
+    print("Watching for changes... (Ctrl+C to stop)\n")
     build()
+    last = get_mtimes()
+
+    try:
+        while True:
+            time.sleep(0.5)
+            current = get_mtimes()
+            if current != last:
+                changed = [p for p in current if current.get(p) != last.get(p)]
+                for p in changed:
+                    print(f"  Changed: {os.path.relpath(p, SCRIPT_DIR)}")
+                print()
+                build()
+                print()
+                last = current
+    except KeyboardInterrupt:
+        print("\nStopped.")
+
+
+if __name__ == '__main__':
+    import sys
+    if '--watch' in sys.argv or '-w' in sys.argv:
+        watch()
+    else:
+        build()

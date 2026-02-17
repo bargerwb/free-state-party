@@ -110,6 +110,28 @@
             object-fit: cover;
             border-radius: 0.5rem;
         }
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(10, 10, 10, 0.3);
+            border-radius: 0.5rem;
+            transition: background 200ms ease;
+            border: none;
+            padding: 0;
+        }
+        .video-overlay:hover {
+            background: rgba(10, 10, 10, 0.15);
+        }
+        .video-overlay svg {
+            transition: transform 200ms ease;
+        }
+        .video-overlay:hover svg {
+            transform: scale(1.1);
+        }
 
         /* Form focus styles */
         .form-input:focus {
@@ -195,11 +217,16 @@
                 </a>
             </div>
             <div class="mt-12 lg:mt-0">
-                <div class="video-container shadow-2xl">
-                    <video controls preload="metadata" playsinline>
+                <div class="video-container shadow-2xl" id="video-wrapper">
+                    <video id="hero-video" preload="metadata" playsinline>
                         <source src="./video/homepage.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
                     </video>
+                    <button id="video-play" class="video-overlay" aria-label="Play video">
+                        <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+                            <circle cx="36" cy="36" r="35" stroke="#d4a017" stroke-width="2" fill="rgba(10,10,10,0.6)"/>
+                            <polygon points="28,20 28,52 54,36" fill="#d4a017"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -276,6 +303,21 @@
         document.addEventListener('visibilitychange', () => {
             paused = document.hidden;
         });
+
+        // Video player
+        const video = document.getElementById('hero-video');
+        const playBtn = document.getElementById('video-play');
+        if (video && playBtn) {
+            playBtn.addEventListener('click', () => {
+                playBtn.style.display = 'none';
+                video.controls = true;
+                video.play();
+            });
+            video.addEventListener('ended', () => {
+                playBtn.style.display = 'flex';
+                video.controls = false;
+            });
+        }
     </script>
 </body>
 </html>

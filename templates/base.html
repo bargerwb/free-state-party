@@ -110,6 +110,28 @@
             object-fit: cover;
             border-radius: 0.5rem;
         }
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(10, 10, 10, 0.3);
+            border-radius: 0.5rem;
+            transition: background 200ms ease;
+            border: none;
+            padding: 0;
+        }
+        .video-overlay:hover {
+            background: rgba(10, 10, 10, 0.15);
+        }
+        .video-overlay svg {
+            transition: transform 200ms ease;
+        }
+        .video-overlay:hover svg {
+            transform: scale(1.1);
+        }
 
         /* Form focus styles */
         .form-input:focus {
