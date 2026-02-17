@@ -1,8 +1,9 @@
 patriot
 builder
+enterprising
 nationalist
 pro-natal
 right-wing
-makers
+maker
 anti-communist
 free-market

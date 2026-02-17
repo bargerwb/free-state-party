@@ -222,7 +222,7 @@ def build():
                     {hero.get('sub_tagline', 'We have a plan.')}
                 </p>
                 <a href="{{{{base}}}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-                    Join Us
+                    Meet Us
                 </a>
             </div>
             <div class="mt-12 lg:mt-0">
