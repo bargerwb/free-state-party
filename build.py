@@ -62,8 +62,8 @@ def md_to_html(text):
         p = p.strip()
         if not p:
             continue
-        # Skip metadata lines (key: value)
-        if re.match(r'^[a-z_]+:', p) and '\n' not in p:
+        # Skip metadata-only paragraphs (every line matches key: value)
+        if all(re.match(r'^[a-z_]+:', line) for line in p.split('\n') if line.strip()):
             continue
         # Bold → <strong>
         p = re.sub(r'\*\*(.+?)\*\*', r'<strong class="text-dark-50">\1</strong>', p)
@@ -163,7 +163,7 @@ def parse_words(text):
 
 
 def build_page(base, page_title, page_description, og_title, page_content,
-               page_scripts='', active_nav=None, is_subdir=False):
+               page_scripts='', active_nav=None, is_subdir=False, base_path=None):
     """Inject content into base template and return final HTML."""
     html = base
     html = html.replace('{{page_title}}', page_title)
@@ -172,8 +172,12 @@ def build_page(base, page_title, page_description, og_title, page_content,
     html = html.replace('{{page_content}}', page_content)
     html = html.replace('{{page_scripts}}', page_scripts)
 
-    # Relative base path: "." for root index.html, ".." for subdir pages
-    html = html.replace('{{base}}', '..' if is_subdir else '.')
+    # Relative base path: explicit base_path overrides is_subdir
+    if base_path is not None:
+        resolved_base = base_path
+    else:
+        resolved_base = '..' if is_subdir else '.'
+    html = html.replace('{{base}}', resolved_base)
 
     # Nav active states
     for nav in ['about', 'events']:
@@ -398,6 +402,7 @@ def build():
 
     sat_address = saturdays_meta.get('address', '')
     sat_maps_url = 'https://www.google.com/maps/search/' + sat_address.replace(' ', '+') if sat_address else ''
+    sat_event_id = saturdays_meta.get('event_id', '')
 
     saturdays_content = f'''
     <section class="px-6 pt-32 pb-12 md:pt-40 md:pb-16">
@@ -410,7 +415,19 @@ def build():
         </div>
     </section>
 
-    <section class="px-6 pb-12 md:pb-16">
+    <section class="px-6 pb-8 md:pb-10 text-center">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="./rsvp/" class="inline-flex items-center justify-center bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+                RSVP
+            </a>
+            <a href="{sat_maps_url}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 text-dark-100 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Map
+            </a>
+        </div>
+    </section>
+
+    <section class="px-6 pb-8 md:pb-10">
         <div class="max-w-4xl mx-auto">
             <a href="{sat_maps_url}" target="_blank" rel="noopener" class="block select-none">
                 <img src="{{{{base}}}}/img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
@@ -420,10 +437,15 @@ def build():
     </section>
 
     <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="{sat_maps_url}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Map
-        </a>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="./rsvp/" class="inline-flex items-center justify-center bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+                RSVP
+            </a>
+            <a href="{sat_maps_url}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 text-dark-100 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Map
+            </a>
+        </div>
     </section>'''
 
     saturdays_html = build_page(
@@ -436,6 +458,125 @@ def build():
         is_subdir=True
     )
 
+    # --- Page 6: RSVP (standalone form at /saturday/rsvp/) ---
+    rsvp_content = f'''
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-24">
+        <div class="max-w-md w-full">
+
+            <!-- Form -->
+            <div id="rsvp-form-wrap">
+                <div class="divider mb-6"></div>
+                <h1 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-2">RSVP</h1>
+                <p class="text-dark-300 mb-8">We&rsquo;ll see you Saturday.</p>
+                <form id="rsvp-form" class="space-y-5" novalidate>
+                    <input type="hidden" name="event_id" value="{sat_event_id}">
+                    <div>
+                        <label class="block text-sm font-medium text-dark-200 mb-1.5" for="rsvp-name">Name</label>
+                        <input id="rsvp-name" name="name" type="text" required autocomplete="name"
+                               class="form-input w-full bg-dark-800 border border-dark-600 text-dark-50 placeholder-dark-500 rounded-lg px-4 py-3"
+                               placeholder="Your name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-dark-200 mb-1.5" for="rsvp-email">Email</label>
+                        <input id="rsvp-email" name="email" type="email" required autocomplete="email"
+                               class="form-input w-full bg-dark-800 border border-dark-600 text-dark-50 placeholder-dark-500 rounded-lg px-4 py-3"
+                               placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-dark-200 mb-1.5" for="rsvp-guests">
+                            Guests <span class="text-dark-500 font-normal">(optional)</span>
+                        </label>
+                        <select id="rsvp-guests" name="guests"
+                                class="form-input w-full bg-dark-800 border border-dark-600 text-dark-50 rounded-lg px-4 py-3">
+                            <option value="">Just me</option>
+                            <option value="1">+1</option>
+                            <option value="2">+2</option>
+                            <option value="3">+3</option>
+                            <option value="4">+4</option>
+                            <option value="5">+5</option>
+                        </select>
+                    </div>
+                    <p id="rsvp-error" class="hidden text-red-400 text-sm"></p>
+                    <button type="submit" id="rsvp-submit"
+                            class="w-full bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg py-4 rounded-lg transition-colors min-h-[48px]">
+                        Submit RSVP
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success state -->
+            <div id="rsvp-success" class="hidden text-center py-8">
+                <svg class="mx-auto mb-6" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#d4a017" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="9 12 11 14 15 10"/>
+                </svg>
+                <h2 class="font-display text-3xl font-bold text-dark-50 mb-3">You&rsquo;re on the list.</h2>
+                <p class="text-dark-300">We&rsquo;ll see you Saturday.</p>
+            </div>
+
+        </div>
+    </section>'''
+
+    rsvp_scripts = '''<script>
+        const RSVP_ENDPOINT = window.location.hostname === 'localhost'
+            ? 'http://localhost:3000/api/rsvp'
+            : 'http://app.freestate.party/api/rsvp';
+
+        document.getElementById('rsvp-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('rsvp-submit');
+            const errorEl = document.getElementById('rsvp-error');
+
+            const name = document.getElementById('rsvp-name').value.trim();
+            const email = document.getElementById('rsvp-email').value.trim();
+            const guestsVal = document.getElementById('rsvp-guests').value;
+            const guests = guestsVal !== '' ? parseInt(guestsVal, 10) : null;
+            const eventId = document.querySelector('input[name="event_id"]').value || null;
+
+            if (!name || !email) {
+                errorEl.textContent = 'Name and email are required.';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting\u2026';
+            errorEl.classList.add('hidden');
+
+            try {
+                const resp = await fetch(RSVP_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, guests, event_id: eventId }),
+                });
+
+                if (!resp.ok) {
+                    const data = await resp.json().catch(() => ({}));
+                    throw new Error(data.message || 'Something went wrong. Please try again.');
+                }
+
+                document.getElementById('rsvp-form-wrap').classList.add('hidden');
+                document.getElementById('rsvp-success').classList.remove('hidden');
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit RSVP';
+            }
+        });
+    </script>'''
+
+    rsvp_html = build_page(
+        base,
+        page_title='RSVP — Free State Saturdays',
+        page_description='RSVP for Free State Saturday, a monthly open gathering in New Hampshire.',
+        og_title='RSVP — Free State Saturdays',
+        page_content=rsvp_content,
+        page_scripts=rsvp_scripts,
+        active_nav=None,
+        base_path='../..'
+    )
+
     # --- Write all pages ---
     # Root page stays as index.html; all others become <name>/index.html for clean URLs
     pages = {
@@ -443,6 +584,7 @@ def build():
         'about/index.html': about_html,
         'events/index.html': events_html_page,
         'saturday/index.html': saturdays_html,
+        'saturday/rsvp/index.html': rsvp_html,
     }
 
     for filepath, html in pages.items():

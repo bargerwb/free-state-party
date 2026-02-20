@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free State Saturdays — Free State Party</title>
-    <meta name="description" content="A monthly open gathering for liberty-minded people in New Hampshire. No membership required.">
+    <title>RSVP — Free State Saturdays</title>
+    <meta name="description" content="RSVP for Free State Saturday, a monthly open gathering in New Hampshire.">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Free State Saturdays">
+    <meta property="og:title" content="RSVP — Free State Saturdays">
     <meta property="og:description" content="A private club for liberty-minded free staters in New Hampshire.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://freestate.party">
@@ -170,15 +170,15 @@
     <header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <!-- Wordmark -->
-            <a href="../" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
+            <a href="../../" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
                 Free State <span class="text-gold-500">Party</span>
             </a>
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="../about/" class="text-dark-200 hover:text-gold-500 transition-colors">About</a>
-                <a href="../events/" class="text-dark-200 hover:text-gold-500 transition-colors">Events</a>
-                <a href="../saturday/" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Meet Us</a>
+                <a href="../../about/" class="text-dark-200 hover:text-gold-500 transition-colors">About</a>
+                <a href="../../events/" class="text-dark-200 hover:text-gold-500 transition-colors">Events</a>
+                <a href="../../saturday/" class="bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-2.5 rounded-lg transition-colors min-h-[44px] flex items-center">Meet Us</a>
             </div>
 
             <!-- Mobile Menu Button -->
@@ -195,68 +195,82 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-lg border-t border-dark-700 px-4 pb-6">
             <div class="flex flex-col gap-1 pt-4 text-base font-medium">
-                <a href="../about/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">About</a>
-                <a href="../events/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">Events</a>
-                <a href="../saturday/" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Meet Us</a>
+                <a href="../../about/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">About</a>
+                <a href="../../events/" class="mobile-link py-3 px-4 text-dark-200 hover:text-gold-500 rounded-lg transition-colors">Events</a>
+                <a href="../../saturday/" class="mobile-link mt-2 bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold px-6 py-3 rounded-lg text-center transition-colors">Meet Us</a>
             </div>
         </div>
     </header>
 
     <!-- ========== PAGE CONTENT ========== -->
     
-    <section class="px-6 pt-32 pb-12 md:pt-40 md:pb-16">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="divider mb-6 mx-auto"></div>
-            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-dark-50 mb-6">Free State Saturday</h1>
-            <div class="space-y-4 text-lg text-dark-200 leading-relaxed max-w-2xl mx-auto">
-                <p>Free State Saturday is our monthly open gathering.</p>
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-24">
+        <div class="max-w-md w-full">
+
+            <!-- Form -->
+            <div id="rsvp-form-wrap">
+                <div class="divider mb-6"></div>
+                <h1 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-2">RSVP</h1>
+                <p class="text-dark-300 mb-8">We&rsquo;ll see you Saturday.</p>
+                <form id="rsvp-form" class="space-y-5" novalidate>
+                    <input type="hidden" name="event_id" value="a95199bb-8b39-4055-940e-7bd6855fa568">
+                    <div>
+                        <label class="block text-sm font-medium text-dark-200 mb-1.5" for="rsvp-name">Name</label>
+                        <input id="rsvp-name" name="name" type="text" required autocomplete="name"
+                               class="form-input w-full bg-dark-800 border border-dark-600 text-dark-50 placeholder-dark-500 rounded-lg px-4 py-3"
+                               placeholder="Your name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-dark-200 mb-1.5" for="rsvp-email">Email</label>
+                        <input id="rsvp-email" name="email" type="email" required autocomplete="email"
+                               class="form-input w-full bg-dark-800 border border-dark-600 text-dark-50 placeholder-dark-500 rounded-lg px-4 py-3"
+                               placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-dark-200 mb-1.5" for="rsvp-guests">
+                            Guests <span class="text-dark-500 font-normal">(optional)</span>
+                        </label>
+                        <select id="rsvp-guests" name="guests"
+                                class="form-input w-full bg-dark-800 border border-dark-600 text-dark-50 rounded-lg px-4 py-3">
+                            <option value="">Just me</option>
+                            <option value="1">+1</option>
+                            <option value="2">+2</option>
+                            <option value="3">+3</option>
+                            <option value="4">+4</option>
+                            <option value="5">+5</option>
+                        </select>
+                    </div>
+                    <p id="rsvp-error" class="hidden text-red-400 text-sm"></p>
+                    <button type="submit" id="rsvp-submit"
+                            class="w-full bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg py-4 rounded-lg transition-colors min-h-[48px]">
+                        Submit RSVP
+                    </button>
+                </form>
             </div>
-        </div>
-    </section>
 
-    <section class="px-6 pb-8 md:pb-10 text-center">
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="./rsvp/" class="inline-flex items-center justify-center bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-                RSVP
-            </a>
-            <a href="https://www.google.com/maps/search/2+Institute+Dr,+Concord,+NH+03301" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 text-dark-100 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Map
-            </a>
-        </div>
-    </section>
+            <!-- Success state -->
+            <div id="rsvp-success" class="hidden text-center py-8">
+                <svg class="mx-auto mb-6" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#d4a017" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="9 12 11 14 15 10"/>
+                </svg>
+                <h2 class="font-display text-3xl font-bold text-dark-50 mb-3">You&rsquo;re on the list.</h2>
+                <p class="text-dark-300">We&rsquo;ll see you Saturday.</p>
+            </div>
 
-    <section class="px-6 pb-8 md:pb-10">
-        <div class="max-w-4xl mx-auto">
-            <a href="https://www.google.com/maps/search/2+Institute+Dr,+Concord,+NH+03301" target="_blank" rel="noopener" class="block select-none">
-                <img src="../img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
-                     class="w-full rounded-lg shadow-2xl hover:opacity-90 transition-opacity" style="max-height: min(80vh, 2000px); object-fit: contain;">
-            </a>
-        </div>
-    </section>
-
-    <section class="px-6 pb-20 md:pb-28 text-center">
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="./rsvp/" class="inline-flex items-center justify-center bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-                RSVP
-            </a>
-            <a href="https://www.google.com/maps/search/2+Institute+Dr,+Concord,+NH+03301" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 text-dark-100 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Map
-            </a>
         </div>
     </section>
 
     <!-- ========== FOOTER ========== -->
     <footer class="px-6 py-12 border-t border-dark-800">
         <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <a href="../" class="font-display text-lg text-dark-50">
+            <a href="../../" class="font-display text-lg text-dark-50">
                 Free State <span class="text-gold-500">Party</span>
             </a>
             <div class="flex items-center gap-6 text-sm text-dark-400">
-                <a href="../about/" class="hover:text-dark-200 transition-colors">About</a>
-                <a href="../events/" class="hover:text-dark-200 transition-colors">Events</a>
-                <a href="../saturday/" class="hover:text-gold-500 transition-colors">Meet Us</a>
+                <a href="../../about/" class="hover:text-dark-200 transition-colors">About</a>
+                <a href="../../events/" class="hover:text-dark-200 transition-colors">Events</a>
+                <a href="../../saturday/" class="hover:text-gold-500 transition-colors">Meet Us</a>
             </div>
             <p class="text-dark-500 text-sm">New Hampshire</p>
         </div>
@@ -297,6 +311,53 @@
     </script>
 
     <!-- Page-specific scripts -->
-    
+    <script>
+        const RSVP_ENDPOINT = window.location.hostname === 'localhost'
+            ? 'http://localhost:3000/api/rsvp'
+            : 'http://app.freestate.party/api/rsvp';
+
+        document.getElementById('rsvp-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('rsvp-submit');
+            const errorEl = document.getElementById('rsvp-error');
+
+            const name = document.getElementById('rsvp-name').value.trim();
+            const email = document.getElementById('rsvp-email').value.trim();
+            const guestsVal = document.getElementById('rsvp-guests').value;
+            const guests = guestsVal !== '' ? parseInt(guestsVal, 10) : null;
+            const eventId = document.querySelector('input[name="event_id"]').value || null;
+
+            if (!name || !email) {
+                errorEl.textContent = 'Name and email are required.';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting…';
+            errorEl.classList.add('hidden');
+
+            try {
+                const resp = await fetch(RSVP_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, guests, event_id: eventId }),
+                });
+
+                if (!resp.ok) {
+                    const data = await resp.json().catch(() => ({}));
+                    throw new Error(data.message || 'Something went wrong. Please try again.');
+                }
+
+                document.getElementById('rsvp-form-wrap').classList.add('hidden');
+                document.getElementById('rsvp-success').classList.remove('hidden');
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit RSVP';
+            }
+        });
+    </script>
 </body>
 </html>
