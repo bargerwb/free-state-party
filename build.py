@@ -520,7 +520,7 @@ def build():
     rsvp_scripts = '''<script>
         const RSVP_ENDPOINT = window.location.hostname === 'localhost'
             ? 'http://localhost:3000/api/rsvp'
-            : 'http://app.freestate.party/api/rsvp';
+            : 'https://app.freestate.party/api/rsvp';
 
         document.getElementById('rsvp-form').addEventListener('submit', async (e) => {
             e.preventDefault();
