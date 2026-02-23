@@ -19,7 +19,7 @@ Last updated: February 15, 2026
 ## Tone & Positioning
 
 - **Confident, unapologetic, insider.** LPNH energy. Not defensive, not corporate.
-- **"Across the room" register** — warm interest, not a bouncer at a rope, not a handshake and business card
+- **"Across the room" register** — vibe based, feelings, we're not explaining, we're creating allure
 - **Community "we" voice** — never "I", never individual names
 - **Reactionary Futurism**: Past values (ambition, self-responsibility, greatness) + forward momentum (space age, techno-optimism). NOT nostalgic. NOT "return to" anything.
 - **Assumes the reader already gets it** — doesn't explain libertarianism, doesn't hedge
@@ -30,7 +30,6 @@ Last updated: February 15, 2026
 
 - **Multi-page architecture**: Jeremy wants separate pages, not single-page scroll. Home has hero + video, rest are separate pages.
 - **JOIN button is bait**: Big gold button in nav and hero. Links to /join.html. You cannot join on the site. You have to come meet them in person.
-- **Dennis is anonymous**: No names on site. "We" energy only. Form submissions go to Dennis via Netlify Forms.
 - **Palette**: Exact same as Free State Saturdays
   - Background: #0a0a0a (dark-900)
   - Primary accent: #d4a017 (gold-500)
@@ -38,7 +37,6 @@ Last updated: February 15, 2026
   - Text hierarchy: #f8f8f8 / #b0b0b0 / #808080
   - Section alternation: #0a0a0a / #141414
 - **Fonts**: Playfair Display (headlines) + Inter (body)
-- **Cycling words**: patriots / nationalists / pro-family / right wing / capitalist — gold, fades in/out ~2.5s
 - **Video**: Ultra NH video embedded on home page (below hero)
 - **Form**: Name, email/phone, "Tell us about yourself" free text, X handle (optional). Netlify Forms.
 - **No logo**: Styled text wordmark for V1
@@ -55,7 +53,6 @@ Files: hero.md (home), about.md (about), events.md (events), saturdays.md (satur
 ## What NOT to Do
 
 - Don't use "application" or "apply" language
-- Don't name Dennis or any individual
 - Don't explain libertarianism to outsiders
 - Don't be defensive about labels
 - Don't use stock photos

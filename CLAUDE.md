@@ -10,8 +10,8 @@ Multi-page site for the Free State Party — a private club for liberty-minded f
 - Shared template: `templates/base.html` with `{{placeholders}}`
 - Build: `python3 build.py` reads content + base template, writes pages to `site/`
 - Tailwind CSS via CDN, Google Fonts (Playfair Display + Inter), vanilla JS
-- Netlify Forms for concierge form (on join.html)
-- Auto-deploys from GitHub (`main` branch) → Netlify (publish dir: `site/`)
+- Forms to backend at app.freestate.party
+- Auto-deploys from GitHub (`main` branch) → Digital Ocean droplet
 
 ## How to Edit Content
 1. Edit the relevant `content/*.md` file
@@ -59,7 +59,6 @@ See `DECISIONS.md` for the full list. Key points:
 - **Fonts**: Playfair Display (headlines) + Inter (body)
 - **Voice**: Community "we", confident, unapologetic, LPNH energy
 - **JOIN button**: Links to /saturdays (join form disabled for now). Cannot join online, must meet in person.
-- **Dennis**: Anonymous. Never named on site.
 - **Reactionary Futurism**: Past values + forward momentum. Not nostalgic.
 
 ## Gotchas
@@ -72,6 +71,5 @@ See `DECISIONS.md` for the full list. Key points:
 
 ## Domain & Hosting
 - **Domain**: freestate.party
-- **Hosting**: Netlify (auto-deploy from GitHub `main`)
-- **Netlify site ID**: d3e99d3d-f171-43b7-8f20-8099bfa744bf
+- **Hosting**: Digital Ocean (auto-deploy from GitHub `main`)
 - **Repo**: github.com/bargerwb/free-state-party
