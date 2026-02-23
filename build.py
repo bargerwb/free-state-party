@@ -30,8 +30,40 @@ def read_file(path):
         return f.read().strip()
 
 
+BASE_URL = 'https://freestate.party'
+
+
+def extract_meta(text):
+    """Extract top-level key: value metadata from a content file.
+    Only reads non-indented, non-heading, non-list lines."""
+    meta = {}
+    for line in text.split('\n'):
+        if line.startswith(' ') or line.startswith('\t') or line.startswith('-') or line.startswith('#'):
+            continue
+        if ':' in line:
+            key, val = line.split(':', 1)
+            if key.strip().isidentifier():
+                meta[key.strip()] = val.strip()
+    return meta
+
+
+def _paragraphs_to_html(text):
+    """Convert plain text to HTML paragraph tags."""
+    html_parts = []
+    for p in re.split(r'\n\s*\n', text.strip()):
+        p = p.strip()
+        if not p:
+            continue
+        p = re.sub(r'\*\*(.+?)\*\*', r'<strong class="text-dark-50">\1</strong>', p)
+        p = re.sub(r'\*(.+?)\*', r'<em>\1</em>', p)
+        p = p.replace(' — ', ' &mdash; ')
+        p = p.replace('— ', '&mdash; ')
+        html_parts.append(f'<p>{p}</p>')
+    return '\n                '.join(html_parts)
+
+
 def md_to_html(text):
-    """Convert simple markdown paragraphs to HTML. Returns (h2_title, body_html)."""
+    """Convert simple markdown to HTML. Returns (h2_title, body_html)."""
     lines = text.strip().split('\n')
     h2_title = ''
     body_lines = []
@@ -39,11 +71,9 @@ def md_to_html(text):
 
     for line in lines:
         stripped = line.strip()
-        # Skip H1
         if stripped.startswith('# ') and not stripped.startswith('## '):
             skip_blank = True
             continue
-        # Capture H2 as section title
         if stripped.startswith('## '):
             h2_title = stripped[3:].strip()
             skip_blank = True
@@ -55,26 +85,42 @@ def md_to_html(text):
         body_lines.append(line)
 
     body_text = '\n'.join(body_lines).strip()
-    paragraphs = re.split(r'\n\s*\n', body_text)
-    html_parts = []
+    # Skip metadata-only paragraphs
+    filtered = []
+    for p in re.split(r'\n\s*\n', body_text):
+        if not all(re.match(r'^[a-z_]+:', line) for line in p.split('\n') if line.strip()):
+            filtered.append(p)
+    return h2_title, _paragraphs_to_html('\n\n'.join(filtered))
 
-    for p in paragraphs:
-        p = p.strip()
-        if not p:
-            continue
-        # Skip metadata-only paragraphs (every line matches key: value)
-        if all(re.match(r'^[a-z_]+:', line) for line in p.split('\n') if line.strip()):
-            continue
-        # Bold → <strong>
-        p = re.sub(r'\*\*(.+?)\*\*', r'<strong class="text-dark-50">\1</strong>', p)
-        # Italic → <em>
-        p = re.sub(r'\*(.+?)\*', r'<em>\1</em>', p)
-        # Em dashes
-        p = p.replace(' — ', ' &mdash; ')
-        p = p.replace('— ', '&mdash; ')
-        html_parts.append(f'<p>{p}</p>')
 
-    return h2_title, '\n                '.join(html_parts)
+def parse_sections(text):
+    """Parse a markdown file with metadata + multiple H2 sections.
+    Returns (meta_dict, [(section_title, body_html), ...])."""
+    meta = extract_meta(text)
+    sections = []
+    current_title = None
+    current_lines = []
+    past_meta = False
+
+    for line in text.strip().split('\n'):
+        stripped = line.strip()
+        if stripped.startswith('# ') and not stripped.startswith('## '):
+            past_meta = True
+            continue
+        if stripped.startswith('## '):
+            if current_title is not None:
+                sections.append((current_title, _paragraphs_to_html('\n'.join(current_lines))))
+            current_title = stripped[3:].strip()
+            current_lines = []
+            past_meta = True
+            continue
+        if past_meta and current_title is not None:
+            current_lines.append(line)
+
+    if current_title is not None:
+        sections.append((current_title, _paragraphs_to_html('\n'.join(current_lines))))
+
+    return meta, sections
 
 
 def parse_events(text):
@@ -163,12 +209,16 @@ def parse_words(text):
 
 
 def build_page(base, page_title, page_description, og_title, page_content,
-               page_scripts='', active_nav=None, is_subdir=False, base_path=None):
+               page_scripts='', active_nav=None, is_subdir=False, base_path=None,
+               og_url='', og_image=''):
     """Inject content into base template and return final HTML."""
     html = base
     html = html.replace('{{page_title}}', page_title)
     html = html.replace('{{page_description}}', page_description)
     html = html.replace('{{og_title}}', og_title)
+    html = html.replace('{{og_url}}', og_url or BASE_URL)
+    og_image_tag = f'<meta property="og:image" content="{BASE_URL}{og_image}">' if og_image else ''
+    html = html.replace('{{og_image_tag}}', og_image_tag)
     html = html.replace('{{page_content}}', page_content)
     html = html.replace('{{page_scripts}}', page_scripts)
 
@@ -194,21 +244,15 @@ def build():
 
     # --- Read content ---
     hero_text = read_file(os.path.join(CONTENT_DIR, 'hero.md'))
-    hero = {}
-    for line in hero_text.split('\n'):
-        if ':' in line and not line.startswith('#'):
-            key, val = line.split(':', 1)
-            hero[key.strip()] = val.strip()
+    hero = extract_meta(hero_text)
 
     words = parse_words(read_file(os.path.join(CONTENT_DIR, 'words.md')))
 
-    pitch_text = read_file(os.path.join(CONTENT_DIR, 'pitch.md'))
-    pitch_title, pitch_body = md_to_html(pitch_text)
-
-    what_text = read_file(os.path.join(CONTENT_DIR, 'what-this-is.md'))
-    what_title, what_body = md_to_html(what_text)
+    about_text = read_file(os.path.join(CONTENT_DIR, 'about.md'))
+    about_meta, about_sections = parse_sections(about_text)
 
     events_text = read_file(os.path.join(CONTENT_DIR, 'events.md'))
+    events_meta = extract_meta(events_text)
     open_events_html, closed_events_html = parse_events(events_text)
 
 
@@ -285,50 +329,48 @@ def build():
 
     home_html = build_page(
         base,
-        page_title='Free State Party — A Private Club for Free Staters',
-        page_description='A private club for liberty-minded free staters in New Hampshire. We didn\'t come here to attend committee meetings. We came here to build something.',
-        og_title='Free State Party',
+        page_title=hero['title'],
+        page_description=hero['description'],
+        og_title=hero.get('og_title', hero['title']),
         page_content=home_content,
         page_scripts=home_scripts,
-        active_nav=None
+        active_nav=None,
+        og_url=BASE_URL
     )
 
-    # --- Page 2: About (pitch + what this is) ---
-    about_content = f'''
-    <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28 bg-dark-800">
+    # --- Page 2: About ---
+    section_styles = ['px-6 pt-32 pb-20 md:pt-40 md:pb-28 bg-dark-800', 'px-6 py-20 md:py-28']
+    about_sections_html = ''
+    for i, (sec_title, sec_body) in enumerate(about_sections):
+        style = section_styles[i] if i < len(section_styles) else 'px-6 py-20 md:py-28'
+        about_sections_html += f'''
+    <section class="{style}">
         <div class="max-w-3xl mx-auto">
             <div class="divider mb-6"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-10">{pitch_title}</h2>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-10">{sec_title}</h2>
             <div class="space-y-6 text-lg text-dark-200 leading-relaxed">
-                {pitch_body}
+                {sec_body}
             </div>
         </div>
-    </section>
+    </section>'''
 
-    <section class="px-6 py-20 md:py-28">
-        <div class="max-w-3xl mx-auto">
-            <div class="divider mb-6"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-10">{what_title}</h2>
-            <div class="space-y-6 text-lg text-dark-200 leading-relaxed">
-                {what_body}
-            </div>
-        </div>
-    </section>
+    about_content = about_sections_html + '''
 
     <section class="px-6 pb-20 md:pb-28 text-center">
-        <a href="{{{{base}}}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
+        <a href="{{base}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
             Come Meet Us
         </a>
     </section>'''
 
     about_html = build_page(
         base,
-        page_title='About — Free State Party',
-        page_description='Not a nonprofit. Not a political party. A private club for liberty-minded free staters in New Hampshire.',
-        og_title='About — Free State Party',
+        page_title=about_meta['title'],
+        page_description=about_meta['description'],
+        og_title=about_meta.get('og_title', about_meta['title']),
         page_content=about_content,
         active_nav='about',
-        is_subdir=True
+        is_subdir=True,
+        og_url=f'{BASE_URL}/about/'
     )
 
     # --- Page 3: Events (tabbed: open / closed) ---
@@ -380,24 +422,20 @@ def build():
 
     events_html_page = build_page(
         base,
-        page_title='Events — Free State Party',
-        page_description='Open and members-only events from the Free State Party in New Hampshire.',
-        og_title='Events — Free State Party',
+        page_title=events_meta['title'],
+        page_description=events_meta['description'],
+        og_title=events_meta.get('og_title', events_meta['title']),
         page_content=events_content,
         page_scripts=events_scripts,
         active_nav='events',
-        is_subdir=True
+        is_subdir=True,
+        og_url=f'{BASE_URL}/events/'
     )
 
 
     # --- Page 5: Saturdays (unlisted landing page) ---
     saturdays_text = read_file(os.path.join(CONTENT_DIR, 'saturdays.md'))
-    saturdays_meta = {}
-    for line in saturdays_text.split('\n'):
-        if ':' in line and not line.startswith('#'):
-            key, val = line.split(':', 1)
-            if key.strip().isidentifier():
-                saturdays_meta[key.strip()] = val.strip()
+    saturdays_meta = extract_meta(saturdays_text)
     saturdays_title, saturdays_body = md_to_html(saturdays_text)
 
     sat_address = saturdays_meta.get('address', '')
@@ -450,15 +488,18 @@ def build():
 
     saturdays_html = build_page(
         base,
-        page_title='Free State Saturdays — Free State Party',
-        page_description='A monthly open gathering for liberty-minded people in New Hampshire. No membership required.',
-        og_title='Free State Saturdays',
+        page_title=saturdays_meta['title'],
+        page_description=saturdays_meta['description'],
+        og_title=saturdays_meta.get('og_title', saturdays_meta['title']),
         page_content=saturdays_content,
         active_nav=None,
-        is_subdir=True
+        is_subdir=True,
+        og_url=f'{BASE_URL}/saturday/',
+        og_image=saturdays_meta.get('og_image', '')
     )
 
     # --- Page 6: RSVP (standalone form at /saturday/rsvp/) ---
+    rsvp_meta = extract_meta(read_file(os.path.join(CONTENT_DIR, 'rsvp.md')))
     rsvp_content = f'''
     <section class="min-h-screen flex flex-col items-center justify-center px-6 py-24">
         <div class="max-w-md w-full">
@@ -568,13 +609,15 @@ def build():
 
     rsvp_html = build_page(
         base,
-        page_title='RSVP — Free State Saturdays',
-        page_description='RSVP for Free State Saturday, a monthly open gathering in New Hampshire.',
-        og_title='RSVP — Free State Saturdays',
+        page_title=rsvp_meta['title'],
+        page_description=rsvp_meta['description'],
+        og_title=rsvp_meta.get('og_title', rsvp_meta['title']),
         page_content=rsvp_content,
         page_scripts=rsvp_scripts,
         active_nav=None,
-        base_path='../..'
+        base_path='../..',
+        og_url=f'{BASE_URL}/saturday/rsvp/',
+        og_image=rsvp_meta.get('og_image', '')
     )
 
     # --- Write all pages ---
