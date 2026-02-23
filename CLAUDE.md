@@ -68,6 +68,7 @@ See `DECISIONS.md` for the full list. Key points:
 - Clean URLs via directory structure (`/about` → `about/index.html`)
 - Links use relative paths with `{{base}}` prefix so local preview works
 - Video is gitignored (too large) — `build.py` copies it from local source during build
+- **Content and metadata are co-located**: a page's title, description, og:image, and all other page-level config must live in the same `content/*.md` file as its content — never in a separate file. Non-technical editors should only need to touch one file per page, without splitting unless there is a clear reason such as a content block being used across multiple pages.
 
 ## Domain & Hosting
 - **Domain**: freestate.party
