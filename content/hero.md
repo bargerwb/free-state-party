@@ -1,7 +1,7 @@
 # Hero
 
-title: Free State Party — A Private Club for Free Staters
-description: A private club for liberty-minded free staters in New Hampshire. We didn't come here to attend committee meetings. We came here to build something.
+title: Free State Party
+description: A private club for free men in New Hampshire. 
 og_title: Free State Party
 
 tagline: A private club for **[word]** free men.
