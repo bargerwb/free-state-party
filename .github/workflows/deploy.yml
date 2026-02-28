@@ -28,6 +28,6 @@ jobs:
           echo "$SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H 147.182.191.226 >> ~/.ssh/known_hosts 2>/dev/null
-          rsync -avz --delete \
+          rsync -avz --delete --exclude="video/" \
             -e "ssh -i ~/.ssh/deploy_key" \
             site/ root@147.182.191.226:/var/www/freestate.party/
