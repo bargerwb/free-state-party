@@ -217,7 +217,7 @@ def build_page(base, page_title, page_description, og_title, page_content,
     html = html.replace('{{page_description}}', page_description)
     html = html.replace('{{og_title}}', og_title)
     html = html.replace('{{og_url}}', og_url or BASE_URL)
-    og_image_tag = f'<meta property="og:image" content="{BASE_URL}{og_image}">' if og_image else ''
+    og_image_tag = f'<meta property="og:image" content="{BASE_URL}{og_image or "/img/og-default.png"}">'
     html = html.replace('{{og_image_tag}}', og_image_tag)
     html = html.replace('{{page_content}}', page_content)
     html = html.replace('{{page_scripts}}', page_scripts)

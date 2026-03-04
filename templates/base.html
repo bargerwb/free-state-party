@@ -13,6 +13,10 @@
     <meta property="og:url" content="{{og_url}}">
     {{og_image_tag}}
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{base}}/img/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{base}}/img/apple-touch-icon.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,8 +175,9 @@
     <header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <!-- Wordmark -->
-            <a href="{{base}}/" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight">
-                Free State <span class="text-gold-500">Party</span>
+            <a href="{{base}}/" class="font-display font-bold text-lg sm:text-xl text-dark-50 tracking-tight flex items-center">
+                <img src="{{base}}/img/logo.svg" alt="" width="28" height="28" class="mr-2 inline-block">
+                Free State <span class="text-gold-500 ml-1">Party</span>
             </a>
 
             <!-- Desktop Nav -->
@@ -209,8 +214,9 @@
     <!-- ========== FOOTER ========== -->
     <footer class="px-6 py-12 border-t border-dark-800">
         <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <a href="{{base}}/" class="font-display text-lg text-dark-50">
-                Free State <span class="text-gold-500">Party</span>
+            <a href="{{base}}/" class="font-display text-lg text-dark-50 flex items-center">
+                <img src="{{base}}/img/logo.svg" alt="" width="24" height="24" class="mr-2 inline-block">
+                Free State <span class="text-gold-500 ml-1">Party</span>
             </a>
             <div class="flex items-center gap-6 text-sm text-dark-400">
                 <a href="{{base}}/about/" class="hover:text-dark-200 transition-colors">About</a>
