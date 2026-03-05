@@ -1,5 +1,6 @@
 title: About — Free State Party
 description: Not a nonprofit. Not a political party. A private club for liberty-minded free staters in New Hampshire.
+h1: About
 
 ## The Driver of the Bus is Dead.
 

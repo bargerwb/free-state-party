@@ -1,5 +1,6 @@
 title: Business Information — Free State Party
 description: Business and service information for the Free State Party.
+h1: Business
 noindex: true
 
 ## About Free State Party

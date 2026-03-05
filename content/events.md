@@ -1,6 +1,7 @@
 # Events
 
 title: Events — Free State Party
+h1: Events
 description: Open and members-only events from the Free State Party in New Hampshire.
 
 ## Open Events

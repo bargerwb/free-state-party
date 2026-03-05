@@ -357,7 +357,9 @@ def build():
         </div>
     </section>'''
 
-    about_content = about_sections_html + '''
+    about_h1 = about_meta.get('h1', 'About')
+    about_content = f'''
+    <h1 class="sr-only">{about_h1}</h1>''' + about_sections_html + '''
 
     <section class="px-6 pb-20 md:pb-28 text-center">
         <a href="{{base}}/saturday/" class="inline-block bg-gold-500 hover:bg-gold-400 text-dark-900 font-bold text-lg px-10 py-4 rounded-lg transition-colors min-h-[48px]">
@@ -377,29 +379,30 @@ def build():
     )
 
     # --- Page 3: Events (tabbed: open / closed) ---
+    events_h1 = events_meta.get('h1', 'Events')
     events_content = f'''
     <section class="px-6 pt-32 pb-20 md:pt-40 md:pb-28">
         <div class="max-w-3xl mx-auto">
             <div class="divider mb-6"></div>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-8">Events</h2>
+            <h1 class="font-display text-3xl md:text-4xl font-bold text-dark-50 mb-8">{events_h1}</h1>
 
             <!-- Tabs -->
-            <div class="flex gap-2 mb-10">
-                <button id="tab-open" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900" data-tab="open">
+            <div class="flex gap-2 mb-10" role="tablist">
+                <button id="tab-open" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900" data-tab="open" role="tab" aria-selected="true" aria-controls="events-open">
                     Open
                 </button>
-                <button id="tab-closed" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100" data-tab="closed">
+                <button id="tab-closed" class="events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100" data-tab="closed" role="tab" aria-selected="false" aria-controls="events-closed">
                     Members Only
                 </button>
             </div>
 
             <!-- Open Events -->
-            <div id="events-open" class="events-panel grid gap-6">
+            <div id="events-open" class="events-panel grid gap-6" role="tabpanel" aria-labelledby="tab-open">
                 {open_events_html}
             </div>
 
             <!-- Closed Events -->
-            <div id="events-closed" class="events-panel hidden">
+            <div id="events-closed" class="events-panel hidden" role="tabpanel" aria-labelledby="tab-closed">
                 <p class="text-2xl text-dark-200 font-display italic">Private.</p>
             </div>
         </div>
@@ -414,11 +417,13 @@ def build():
                 document.querySelectorAll('.events-panel').forEach(p => p.classList.add('hidden'));
                 document.getElementById('events-' + target).classList.remove('hidden');
 
-                // Toggle tab styles
+                // Toggle tab styles and ARIA
                 document.querySelectorAll('.events-tab').forEach(t => {
                     t.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100';
+                    t.setAttribute('aria-selected', 'false');
                 });
                 tab.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900';
+                tab.setAttribute('aria-selected', 'true');
             });
         });
     </script>'''
@@ -472,7 +477,7 @@ def build():
         <div class="max-w-4xl mx-auto">
             <a href="{sat_maps_url}" target="_blank" rel="noopener" class="block select-none">
                 <img src="{{{{base}}}}/img/saturdays-poster.jpg" alt="Free State Saturdays — this month's gathering"
-                     class="w-full rounded-lg shadow-2xl hover:opacity-90 transition-opacity" style="max-height: min(80vh, 2000px); object-fit: contain;">
+                     class="w-full rounded-lg shadow-2xl hover:opacity-90 transition-opacity max-h-[80vh] object-contain">
             </a>
         </div>
     </section>
@@ -520,12 +525,16 @@ def build():
         </div>
     </section>'''
 
+    business_h1 = business_meta.get('h1', 'Business')
+    business_content = f'''
+    <h1 class="sr-only">{business_h1}</h1>''' + business_sections_html
+
     business_html = build_page(
         base,
         page_title=business_meta['title'],
         page_description=business_meta['description'],
         og_title=business_meta.get('og_title', business_meta['title']),
-        page_content=business_sections_html,
+        page_content=business_content,
         active_nav=None,
         is_subdir=True,
         og_url=f'{BASE_URL}/business/',
@@ -541,7 +550,6 @@ def build():
 <title>Redirecting...</title>
 </head>
 <body>
-<script>window.location.replace("{sat_rsvp_url}");</script>
 </body>
 </html>'''
 
