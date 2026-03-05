@@ -12,7 +12,7 @@ We host regular events including our monthly Free State Saturday open gatherings
 
 ## Pricing
 
-Membership dues and event fees vary. Specific pricing is communicated during our in-person onboarding process. All charges are in USD.
+Membership dues and event fees vary. Specific pricing is communicated during our onboarding process. All charges are in USD.
 
 ## Refund & Cancellation Policy
 
@@ -20,4 +20,4 @@ Members may cancel their membership at any time by contacting us. Refund request
 
 ## Contact
 
-For questions about charges, membership, or events, reach us via DM on X at [@freestatepty] or at contact@freestate.party
+For questions about charges, membership, or events, reach us via DM on X at [@freestatepty](https://x.com/freestatepty) or at contact@freestate.party

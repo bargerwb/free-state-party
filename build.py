@@ -54,6 +54,7 @@ def _paragraphs_to_html(text):
         p = p.strip()
         if not p:
             continue
+        p = re.sub(r'\[(.+?)\]\((.+?)\)', r'<a href="\2" class="text-gold-500 hover:text-gold-400 transition-colors">\1</a>', p)
         p = re.sub(r'\*\*(.+?)\*\*', r'<strong class="text-dark-50">\1</strong>', p)
         p = re.sub(r'\*(.+?)\*', r'<em>\1</em>', p)
         p = p.replace(' — ', ' &mdash; ')
