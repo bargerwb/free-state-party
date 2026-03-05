@@ -210,11 +210,13 @@ def parse_words(text):
 
 def build_page(base, page_title, page_description, og_title, page_content,
                page_scripts='', active_nav=None, is_subdir=False, base_path=None,
-               og_url='', og_image=''):
+               og_url='', og_image='', noindex=False):
     """Inject content into base template and return final HTML."""
     html = base
     html = html.replace('{{page_title}}', page_title)
     html = html.replace('{{page_description}}', page_description)
+    noindex_tag = '\n    <meta name="robots" content="noindex, nofollow">' if noindex else ''
+    html = html.replace('\n    {{noindex_tag}}', noindex_tag)
     html = html.replace('{{og_title}}', og_title)
     html = html.replace('{{og_url}}', og_url or BASE_URL)
     og_image_tag = f'<meta property="og:image" content="{BASE_URL}{og_image or "/img/og-default.png"}">'
@@ -498,7 +500,38 @@ def build():
         og_image=saturdays_meta.get('og_image', '')
     )
 
-    # --- Page 6: /saturday/rsvp/ redirect ---
+    # --- Page 6: Business (unlisted, noindex — for Stripe) ---
+    business_text = read_file(os.path.join(CONTENT_DIR, 'business.md'))
+    business_meta = extract_meta(business_text)
+    _, business_sections = parse_sections(business_text)
+
+    business_sections_html = ''
+    for i, (sec_title, sec_body) in enumerate(business_sections):
+        style = 'px-6 pt-32 pb-12 md:pt-40 md:pb-16' if i == 0 else 'px-6 pb-12 md:pb-16'
+        business_sections_html += f'''
+    <section class="{style}">
+        <div class="max-w-3xl mx-auto">
+            <div class="divider mb-6"></div>
+            <h2 class="font-display text-2xl md:text-3xl font-bold text-dark-50 mb-8">{sec_title}</h2>
+            <div class="space-y-4 text-lg text-dark-200 leading-relaxed">
+                {sec_body}
+            </div>
+        </div>
+    </section>'''
+
+    business_html = build_page(
+        base,
+        page_title=business_meta['title'],
+        page_description=business_meta['description'],
+        og_title=business_meta.get('og_title', business_meta['title']),
+        page_content=business_sections_html,
+        active_nav=None,
+        is_subdir=True,
+        og_url=f'{BASE_URL}/business/',
+        noindex=True
+    )
+
+    # --- Page 7: /saturday/rsvp/ redirect ---
     rsvp_redirect_html = f'''<!DOCTYPE html>
 <html>
 <head>
@@ -517,6 +550,7 @@ def build():
         'index.html': home_html,
         'about/index.html': about_html,
         'events/index.html': events_html_page,
+        'business/index.html': business_html,
         'saturday/index.html': saturdays_html,
         'saturday/rsvp/index.html': rsvp_redirect_html,
     }
