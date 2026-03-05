@@ -145,6 +145,10 @@ def parse_events(text):
         elif stripped.startswith('# '):
             continue
 
+        # Skip lines before the first section heading
+        if section is None:
+            continue
+
         if stripped.startswith('- title:'):
             if current and section:
                 events[section].append(current)
@@ -211,7 +215,7 @@ def parse_words(text):
 
 def build_page(base, page_title, page_description, og_title, page_content,
                page_scripts='', active_nav=None, is_subdir=False, base_path=None,
-               og_url='', og_image='', noindex=False):
+               og_url='', og_image='', noindex=False, footer=None):
     """Inject content into base template and return final HTML."""
     html = base
     html = html.replace('{{page_title}}', page_title)
@@ -237,6 +241,11 @@ def build_page(base, page_title, page_description, og_title, page_content,
         cls = 'nav-active' if active_nav == nav else 'text-dark-200'
         html = html.replace(f'{{{{nav_{nav}_class}}}}', cls)
 
+    # Footer content
+    if footer:
+        html = html.replace('{{footer_name}}', footer.get('name', 'Free State Party'))
+        html = html.replace('{{footer_location}}', footer.get('location', 'New Hampshire'))
+
     return html
 
 
@@ -257,6 +266,9 @@ def build():
     events_text = read_file(os.path.join(CONTENT_DIR, 'events.md'))
     events_meta = extract_meta(events_text)
     open_events_html, closed_events_html = parse_events(events_text)
+
+    footer_text = read_file(os.path.join(CONTENT_DIR, 'footer.md'))
+    footer_meta = extract_meta(footer_text)
 
 
     # --- Page 1: Home (hero + video) ---
@@ -281,10 +293,10 @@ def build():
                     <video id="hero-video" preload="metadata" playsinline>
                         <source src="{{{{base}}}}/video/homepage.mp4" type="video/mp4">
                     </video>
-                    <button id="video-play" class="video-overlay" aria-label="Play video">
+                    <button id="video-play" class="video-overlay text-gold-500" aria-label="Play video">
                         <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-                            <circle cx="36" cy="36" r="35" stroke="#d4a017" stroke-width="2" fill="rgba(10,10,10,0.6)"/>
-                            <polygon points="28,20 28,52 54,36" fill="#d4a017"/>
+                            <circle cx="36" cy="36" r="35" stroke="currentColor" stroke-width="2" class="fill-dark-900/60"/>
+                            <polygon points="28,20 28,52 54,36" fill="currentColor"/>
                         </svg>
                     </button>
                 </div>
@@ -319,12 +331,12 @@ def build():
         const playBtn = document.getElementById('video-play');
         if (video && playBtn) {{
             playBtn.addEventListener('click', () => {{
-                playBtn.style.display = 'none';
+                playBtn.classList.add('hidden');
                 video.controls = true;
                 video.play();
             }});
             video.addEventListener('ended', () => {{
-                playBtn.style.display = 'flex';
+                playBtn.classList.remove('hidden');
                 video.controls = false;
             }});
         }}
@@ -338,7 +350,8 @@ def build():
         page_content=home_content,
         page_scripts=home_scripts,
         active_nav=None,
-        og_url=BASE_URL
+        og_url=BASE_URL,
+        footer=footer_meta
     )
 
     # --- Page 2: About ---
@@ -375,7 +388,8 @@ def build():
         page_content=about_content,
         active_nav='about',
         is_subdir=True,
-        og_url=f'{BASE_URL}/about/'
+        og_url=f'{BASE_URL}/about/',
+        footer=footer_meta
     )
 
     # --- Page 3: Events (tabbed: open / closed) ---
@@ -409,23 +423,42 @@ def build():
     </section>'''
 
     events_scripts = '''<script>
-        document.querySelectorAll('.events-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const target = tab.dataset.tab;
+        const tabs = Array.from(document.querySelectorAll('.events-tab'));
 
-                // Toggle panels
-                document.querySelectorAll('.events-panel').forEach(p => p.classList.add('hidden'));
-                document.getElementById('events-' + target).classList.remove('hidden');
+        function activateTab(tab) {
+            const target = tab.dataset.tab;
 
-                // Toggle tab styles and ARIA
-                document.querySelectorAll('.events-tab').forEach(t => {
-                    t.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100';
-                    t.setAttribute('aria-selected', 'false');
-                });
-                tab.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900';
-                tab.setAttribute('aria-selected', 'true');
+            // Toggle panels
+            document.querySelectorAll('.events-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById('events-' + target).classList.remove('hidden');
+
+            // Toggle tab styles and ARIA
+            tabs.forEach(t => {
+                t.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-dark-800 text-dark-300 hover:text-dark-100';
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+            });
+            tab.className = 'events-tab px-5 py-2.5 rounded-lg font-medium text-sm transition-colors bg-gold-500 text-dark-900';
+            tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
+            tab.focus();
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => activateTab(tab));
+            tab.addEventListener('keydown', (e) => {
+                const idx = tabs.indexOf(tab);
+                let target = null;
+                if (e.key === 'ArrowRight') target = tabs[(idx + 1) % tabs.length];
+                else if (e.key === 'ArrowLeft') target = tabs[(idx - 1 + tabs.length) % tabs.length];
+                else if (e.key === 'Home') target = tabs[0];
+                else if (e.key === 'End') target = tabs[tabs.length - 1];
+                if (target) { e.preventDefault(); activateTab(target); }
             });
         });
+
+        // Set initial tabindex
+        tabs.forEach((t, i) => t.setAttribute('tabindex', i === 0 ? '0' : '-1'));
     </script>'''
 
     events_html_page = build_page(
@@ -437,7 +470,8 @@ def build():
         page_scripts=events_scripts,
         active_nav='events',
         is_subdir=True,
-        og_url=f'{BASE_URL}/events/'
+        og_url=f'{BASE_URL}/events/',
+        footer=footer_meta
     )
 
 
@@ -503,7 +537,8 @@ def build():
         active_nav=None,
         is_subdir=True,
         og_url=f'{BASE_URL}/saturday/',
-        og_image=saturdays_meta.get('og_image', '')
+        og_image=saturdays_meta.get('og_image', ''),
+        footer=footer_meta
     )
 
     # --- Page 6: Business (unlisted, noindex — for Stripe) ---
@@ -538,7 +573,8 @@ def build():
         active_nav=None,
         is_subdir=True,
         og_url=f'{BASE_URL}/business/',
-        noindex=True
+        noindex=True,
+        footer=footer_meta
     )
 
     # --- Page 7: /saturday/rsvp/ redirect ---
