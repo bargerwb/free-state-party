@@ -290,10 +290,13 @@ def render_api_event_cards(events):
         else:
             img_html = '<img src="{{base}}/img/logo.svg" alt="Free State Party" loading="lazy" class="w-full aspect-[2/3] object-contain rounded-t-lg bg-dark-800 p-8">'
 
+        desc_html = f'<p class="text-dark-300 text-sm mt-1 line-clamp-2">{description}</p>' if description else ''
+
         card_inner = f'''{img_html}
                     <div class="px-4 py-3">
                         <h3 class="font-display text-base font-bold text-dark-50 mb-1">{title}</h3>
                         <p class="text-gold-500 text-sm font-medium">{date_str}</p>
+                        {desc_html}
                     </div>'''
 
         if rsvp_url:
