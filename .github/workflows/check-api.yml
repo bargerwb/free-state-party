@@ -1,0 +1,28 @@
+name: Rebuild on API changes
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for API changes
+        id: compare
+        run: |
+          NEW_HASH=$(curl -sf https://app.freestate.party/api/public/events | sha256sum | cut -d' ' -f1)
+          OLD_HASH=$(curl -sf https://freestate.party/events-hash.txt 2>/dev/null || echo "none")
+          if [ "$NEW_HASH" != "$OLD_HASH" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "API changed: $OLD_HASH -> $NEW_HASH"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No API changes"
+          fi
+
+      - name: Trigger deploy
+        if: steps.compare.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --repo ${{ github.repository }}
