@@ -192,8 +192,10 @@ def normalize_event(event):
     if not isinstance(rsvp_url, str):
         rsvp_url = ''
 
-    # Validate rsvp_url scheme — only allow http(s) to prevent XSS via javascript: etc.
-    if rsvp_url and not (rsvp_url.startswith('https://') or rsvp_url.startswith('http://')):
+    # Resolve relative rsvp_url against BASE_URL, validate scheme
+    if rsvp_url and not rsvp_url.startswith(('https://', 'http://')):
+        rsvp_url = f'{BASE_URL}{rsvp_url}'
+    if rsvp_url and not rsvp_url.startswith(('https://', 'http://')):
         rsvp_url = ''
 
     # Format datetime (may raise on malformed timestamps)
